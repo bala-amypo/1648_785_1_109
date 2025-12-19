@@ -1,4 +1,4 @@
 package com.example.demo.repository;
-public class userprofilerepository{
+public class creditcardrepository{
     
 }
