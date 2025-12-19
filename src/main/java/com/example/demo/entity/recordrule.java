@@ -1,4 +1,4 @@
 package com.example.demo.entity;
-public class creditcard{
+public class recordrule{
     
 }
