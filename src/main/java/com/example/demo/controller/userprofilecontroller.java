@@ -13,22 +13,22 @@ public class userprofilecontroller {
     @Autowired userprofileservice ser;
 
     @PostMapping("/POST")
-    public UserProfile create(@RequestBody UserProfile profile) {
+    public userprofile create(@RequestBody userprofile profile) {
         return ser.createUser(profile);
     }
 
     @GetMapping("/GET/{id}")
-    public UserProfile getById(@PathVariable Long id) {
+    public userprofile getById(@PathVariable Long id) {
         return ser.getUserById(id);
     }
 
     @GetMapping("/GET")
-    public List<UserProfile> getAll() {
+    public List<userprofile> getAll() {
         return ser.getAllUsers();
     }
 
     @PutMapping("/PUT/{id}/status")
-    public UserProfile updateStatus(@PathVariable Long id,@RequestParam boolean active) {
+    public userprofile updateStatus(@PathVariable Long id,@RequestParam boolean active) {
         return ser.updateUserStatus(id, active);
     }
 
