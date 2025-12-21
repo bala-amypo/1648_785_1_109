@@ -44,7 +44,6 @@
     <artifactId>spring-boot-starter-data-jpa</artifactId>
     <version>3.5.6</version>
 </dependency>
-<!-- Lambok -->
 <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 <dependency>
     <groupId>org.projectlombok</groupId>
