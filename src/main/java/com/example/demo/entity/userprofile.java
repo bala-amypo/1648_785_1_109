@@ -13,12 +13,12 @@ public class userprofile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(unique = true)
+    @Column(unique = true)
     private String userId;
 
     private String fullName;
 
-    // @Column(unique = true)
+    @Column(unique = true)
     private String email;
 
     private String password;
