@@ -30,7 +30,7 @@ public class userprofileimpl implements userprofileservice {
 
     @Override
     public userprofile findByUserId(String userId) {
-        return users.findById(userId).orElse(null);
+        return users.findById(userod).orElse(null);
     }
 
     @Override
