@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
+import lombok.*;
 @Entity
 @Data
 @AllArgsConstructor
@@ -27,8 +27,8 @@ public class userprofile {
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+    // @PrePersist
+    // void onCreate() {
+    //     createdAt = LocalDateTime.now();
+    // }
 }
