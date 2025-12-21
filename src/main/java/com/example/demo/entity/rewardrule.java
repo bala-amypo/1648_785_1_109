@@ -7,16 +7,15 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class creditcard {
+public class rewardrule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private String cardName;
-    private String issuer;
-    private String cardType;
-    private Double annualFee;
-    private String status;
+    private Long cardId;
+    private String category;
+    private String rewardType;
+    private Double multiplier;
+    private Boolean active;
 }
