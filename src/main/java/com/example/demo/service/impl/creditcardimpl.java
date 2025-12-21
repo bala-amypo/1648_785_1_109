@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class creditcardserviceimpl implements creditcardservice {
+public class creditcardimpl implements creditcardservice {
 
     private final creditcardrepository repository;
 
     // Constructor Injection
-    public creditcardserviceimpl(creditcardrepository repository) {
+    public creditcardimpl(creditcardrepository repository) {
         this.repository = repository;
     }
 
