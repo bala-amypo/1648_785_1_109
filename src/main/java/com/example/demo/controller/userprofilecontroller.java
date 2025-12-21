@@ -1,20 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.UserProfile;
-import com.example.demo.service.UserProfileService;
+import com.example.demo.entity.userprofile;
+import com.example.demo.service.userprofileservice;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class UserProfileController {
+public class userprofilecontroller {
 
-    private final UserProfileService service;
-
-    public UserProfileController(UserProfileService service) {
-        this.service = service;
-    }
+    @Autowired userprofileservice service;
 
     @PostMapping("/POST")
     public UserProfile create(@RequestBody UserProfile profile) {
