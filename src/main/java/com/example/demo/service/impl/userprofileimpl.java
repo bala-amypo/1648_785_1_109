@@ -33,10 +33,11 @@ public class userprofileimpl implements userprofileservice {
         return users.findById(userId).orElse(null);
     }
 
-    @Override
-    public List<userprofile> getAllUsers() {
-        return users.findAll();
+   @Override
+    public userprofile findByUserId(String userId) {
+    return users.findByUserId(userId).orElse(null);
     }
+
 
     @Override
     public userprofile updateUserStatus(Long id, boolean active) {
