@@ -52,5 +52,5 @@ package com.example.demo.service.imples;
 public class userprofileimples implements userprofileservice{
 @Autowired userprofilerepository user;
 @Override
-public userprofile
+public userprofile 
 }
