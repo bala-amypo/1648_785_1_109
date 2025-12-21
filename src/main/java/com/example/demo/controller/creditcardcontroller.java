@@ -32,19 +32,19 @@ public class creditcardcontroller {
     }
 
     // Get credit card by card id
-    @GetMapping("/{id}")
+    @GetMapping("/GET/{id}")
     public creditcard getCardById(@PathVariable Long id) {
         return service.getCardById(id);
     }
 
     // Get credit card by user id
-    @GetMapping("/user/{userId}")
+    @GetMapping("/GET/user/{userId}")
     public creditcard getCardByUser(@PathVariable Long userId) {
         return service.getCardByUser(userId);
     }
 
     // Get all credit cards
-    @GetMapping("/all")
+    @GetMapping("/GET")
     public List<creditcard> getAllCards() {
         return service.getAllCard();
     }
