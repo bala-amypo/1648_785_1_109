@@ -12,7 +12,7 @@ public class userprofilecontroller {
      private final userprofileservice ser;
 
     // Constructor Injection
-    public Userprofilecontroller(userprofileservice ser) {
+    public userprofilecontroller(userprofileservice ser) {
         this.ser = ser;
     }
 
