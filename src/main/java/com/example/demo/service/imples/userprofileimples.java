@@ -5,7 +5,6 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserProfileRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -14,7 +13,6 @@ public class userprofileimles {
     private final UserProfileRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    // MUST FOLLOW THIS ORDER
     public UserProfileService(UserProfileRepository repository,PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
