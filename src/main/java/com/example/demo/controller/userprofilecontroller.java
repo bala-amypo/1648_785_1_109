@@ -4,7 +4,7 @@ import com.example.demo.entity.userprofile;
 import com.example.demo.service.userprofileservice;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
+import org.springramework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
