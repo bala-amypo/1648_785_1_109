@@ -18,13 +18,13 @@ public class creditcardcontroller {
     }
 
     // Add new credit card
-    @PostMapping("/add")
+    @PostMapping("/POST")
     public creditcard addCard(@RequestBody creditcard card) {
         return service.addCard(card);
     }
 
     // Update credit card by id
-    @PutMapping("/update/{id}")
+    @PutMapping("/PUT/{id}")
     public creditcard updateCard(
             @PathVariable Long id,
             @RequestBody creditcard updatedCard) {
