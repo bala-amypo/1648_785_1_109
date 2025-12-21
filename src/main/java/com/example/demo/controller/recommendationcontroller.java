@@ -29,13 +29,13 @@ public class recommendationcontroller {
     }
 
     // Get recommendations by user
-    @GetMapping("/user/{userId}")
+    @GetMapping("/GET/user/{userId}")
     public List<recommendation> getByUser(@PathVariable Long userId) {
         return service.getRecommendationByUser(userId);
     }
 
     // Get all recommendations
-    @GetMapping
+    @GetMapping("/GET")
     public List<recommendation> getAll() {
         return service.getAllRecommendations();
     }
