@@ -25,9 +25,7 @@ public class rewardrulecontroller {
 
     // Update reward rule
     @PutMapping("/PUT/{id}")
-    public rewardrule updateRule(
-            @PathVariable Long id,
-            @RequestBody rewardrule updated) {
+    public rewardrule updateRule(@PathVariable Long id,@RequestBody rewardrule updated) {
         return service.updateRule(id, updated);
     }
 
@@ -44,7 +42,7 @@ public class rewardrulecontroller {
     }
 
     // Get all reward rules
-    @GetMapping
+    @GetMapping("/GET")
     public List<rewardrule> getAllRules() {
         return service.getAllRules();
     }
