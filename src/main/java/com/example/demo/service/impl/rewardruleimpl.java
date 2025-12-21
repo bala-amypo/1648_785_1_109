@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class rewardruleserviceimpl implements rewardruleservice {
+public class rewardruleimpl implements rewardruleservice {
 
     private final rewardrulerepository repository;
 
     // Constructor Injection
-    public rewardruleserviceimpl(rewardrulerepository repository) {
+    public rewardruleimpl(rewardrulerepository repository) {
         this.repository = repository;
     }
 
