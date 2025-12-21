@@ -36,8 +36,8 @@ public class userprofilecontroller {
         return ser.updateUserStatus(id, active);
     }
 
-    // @GetMapping("/PUT/lookup/{userId}")
-    // public userprofile lookup(@PathVariable String userId) {
-    //     return ser.findByUserId(userId);
-    // }
+    @GetMapping("/PUT/lookup/{userId}")
+    public userprofile lookup(@PathVariable String userId) {
+        return ser.findByUserIds(userId);
+    }
 }
