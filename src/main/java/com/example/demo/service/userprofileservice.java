@@ -1,9 +1,12 @@
 package com.example.demo.service;
 import com.example.demo.entity.userprofile;
-public class userprofileservice{
-userprofile createUser(userprofile profile);
-userprofile getUserById(Lond id);
-userprofile findByUserId(String userId);
-userprofile getAllUsers();
-userprofile UpdateUserStatus(Long id,boolean active);
+import java.util.List;
+
+public interface userprofileService {
+
+    userprofile createUser(userprofile profile);
+    userprofile getUserById(Long id);
+    userprofile findByUserId(String userId);
+    List<userprofile> getAllUsers();
+    userprofile updateUserStatus(Long id, boolean active);
 }
