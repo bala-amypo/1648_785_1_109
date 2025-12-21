@@ -27,8 +27,8 @@ public class userprofile {
 
     private LocalDateTime createdAt;
 
-    // @PrePersist
-    // void onCreate() {
-    //     createdAt = LocalDateTime.now();
-    // }
+    @PrePersist
+    void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }
