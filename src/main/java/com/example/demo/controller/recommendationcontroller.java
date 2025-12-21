@@ -17,13 +17,13 @@ public class recommendationcontroller {
     }
 
     // Generate recommendation
-    @PostMapping("/generate/{intentId}")
+    @PostMapping("/POST/generate/{intentId}")
     public recommendation generate(@PathVariable Long intentId) {
         return service.generateRecommendation(intentId);
     }
 
     // Get by recommendation ID
-    @GetMapping("/{id}")
+    @GetMapping("/GET/{id}")
     public recommendation getById(@PathVariable Long id) {
         return service.getRecommendationById(id);
     }
