@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.Repository;
 import java.util.Optional;
 @Repository
 public interface userprofilerepository extends JpaRepository<userprofile, Long> {
-    
+
 }
