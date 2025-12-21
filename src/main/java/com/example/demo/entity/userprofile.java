@@ -28,6 +28,4 @@ public class UserProfile {
     void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
-    // getters & setters
 }
