@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface creditcardservice {
 
-    creditcard createUser(userprofile profile);
-    creditcard getUserById(Long id);
-    creditcard findByUserId(String userId);
-    List<creditcard> getAllUsers();
-    creditcard updateUserStatus(Long id, boolean active);
+    creditcard addCard(creditcard card);
+    creditcard updateCard(Long id,creditcard updated);
+    creditcard getCardByUser(Long userId);
+    creditcard getCardById(Long id);
+    List<creditcard> getAllCard();
 }
