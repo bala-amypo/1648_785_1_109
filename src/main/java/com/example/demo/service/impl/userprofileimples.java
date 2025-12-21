@@ -1,21 +1,15 @@
 package com.example.demo.service.impl;
 import com.example.demo.entity.userprofile;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserProfileRepository;
-import com.example.demo.service.UserProfileService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.demo.service.userprofileservice;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-public class UserProfileServiceImpl implements UserProfileService {
+public class userprofileserviceimples implements userprofileservice {
 
-    private final UserProfileRepository users;
-    private final PasswordEncoder passwordEncoder;
-
-    // Constructor Injection (BEST PRACTICE)
-    public UserProfileServiceImpl(UserProfileRepository users,PasswordEncoder passwordEncoder) {
+    private final userprofilerepository users;
+    public userprofileserviceimples(userprofilerepository users) {
         this.users = users;
         this.passwordEncoder = passwordEncoder;
     }
