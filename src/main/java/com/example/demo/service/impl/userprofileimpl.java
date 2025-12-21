@@ -27,10 +27,10 @@ public class userprofileimpl implements userprofileservice {
         return users.findById(id).orElse(null);
     }
 
-    // @Override
-    // public userprofile findByUserId(String userId) {
-    //     return users.findByUserId(userId).orElse(null);
-    // }
+    @Override
+    public userprofile findByUserIds(String userId) {
+        return users.findByUserId(userId).orElse(null);
+    }
 
     @Override
     public List<userprofile> getAllUsers() {

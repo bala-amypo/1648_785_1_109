@@ -7,7 +7,7 @@ public interface userprofileservice {
 
     userprofile createUser(userprofile profile);
     userprofile getUserById(Long id);
-    // Optional<userprofile> findByUserId(String userId);
+    Optional<userprofile> findByUserIds(String userId);
     List<userprofile> getAllUsers();
     userprofile updateUserStatus(Long id, boolean active);
 }
