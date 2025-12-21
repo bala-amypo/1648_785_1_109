@@ -50,6 +50,12 @@
     <artifactId>lombok</artifactId>
     <version>1.18.30</version>
 </dependency>
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <scope>provided</scope>
+</dependency>
+
 <!-- Swagger -->
 <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 <dependency>
