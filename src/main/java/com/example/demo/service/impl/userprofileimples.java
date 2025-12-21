@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class userprofileserviceImpl implements userprofileservice {
+public class Userprofileimpl implements userprofileservice {
 
     private final userprofilerepository users;
 
     // Constructor Injection
-    public UserProfileServiceImpl(userprofilerepository users) {
+    public Userprofileimpl(userprofilerepository users) {
         this.users = users;
     }
 
