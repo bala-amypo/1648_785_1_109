@@ -25,19 +25,19 @@ public class recommendationimpl implements recommendationservice {
     @Override
     public recommendation generateRecommendation(Long intentId) {
 
-        // fetch purchase intent
         purchaseintent intent = intentRepo.findById(intentId).orElse(null);
         if (intent == null) {
             return null;
         }
 
-        // simple recommendation logic
         recommendation rec = new recommendation();
         rec.setUserId(intent.getUserId());
-        rec.setIntentId(intent.getId());
-        rec.setProduct(intent.getProduct());
-        rec.setRecommendedCard("DEFAULT_CARD");
-        rec.setRewardValue(0.0);
+        rec.setPurchaseIntentId(intent.getId());
+
+        // temporary static values (can be replaced later)
+        rec.setRecommendedCardId(1L);
+        rec.setExpectedRewardValue(0.0);
+        rec.setCalculationDetailsJson("Reward calculation pending");
 
         return recommendationRepo.save(rec);
     }

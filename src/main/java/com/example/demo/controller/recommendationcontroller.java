@@ -16,13 +16,13 @@ public class recommendationcontroller {
         this.service = service;
     }
 
-    // Generate recommendation from purchase intent
+    // Generate recommendation
     @PostMapping("/generate/{intentId}")
     public recommendation generate(@PathVariable Long intentId) {
         return service.generateRecommendation(intentId);
     }
 
-    // Get recommendation by ID
+    // Get by recommendation ID
     @GetMapping("/{id}")
     public recommendation getById(@PathVariable Long id) {
         return service.getRecommendationById(id);
