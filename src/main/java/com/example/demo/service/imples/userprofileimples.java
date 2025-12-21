@@ -1,10 +1,11 @@
 package com.example.demo.service.imples;
 import com.example.demo.entity.userprofile;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.UserProfileRepository;
-import com.example.demo.service.UserProfileService;
+import com.example.demo.repository.userprofilerepository;
+import com.example.demo.service.userprofileservice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springramework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @Service
