@@ -30,13 +30,13 @@ public class purchaseintentcontroller {
     }
 
     // Get intent by ID
-    @GetMapping("/{id}")
+    @GetMapping("/GET/{id}")
     public purchaseintent getIntentById(@PathVariable Long id) {
         return service.getIntentById(id);
     }
 
     // Get all purchase intents
-    @GetMapping
+    @GetMapping("/GET")
     public List<purchaseintent> getAllIntents() {
         return service.getAllIntents();
     }
