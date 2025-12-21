@@ -13,7 +13,7 @@ public class userprofileimpl implements userprofileservice {
     private final userprofilerepository users;
 
     // Constructor Injection
-    public Userprofileimpl(userprofilerepository users) {
+    public userprofileimpl(userprofilerepository users) {
         this.users = users;
     }
 
