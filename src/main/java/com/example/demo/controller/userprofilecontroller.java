@@ -4,13 +4,17 @@ import com.example.demo.entity.userprofile;
 import com.example.demo.service.userprofileservice;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import org.springramework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
 public class userprofilecontroller {
 
-    @Autowired userprofileservice se
+     private final userprofileservice ser;
+
+    // Constructor Injection
+    public Userprofilecontroller(userprofileservice ser) {
+        this.ser = ser;
+    }
 
     @PostMapping("/POST")
     public userprofile create(@RequestBody userprofile profile) {
