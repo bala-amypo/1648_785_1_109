@@ -3,7 +3,7 @@ package com.example.demo.entity;
 @Entity
 public class creditcard{
     @Id
-    @GeneratedValue(strat)
+    @GeneratedValue(strategy=GenerationType.IDNETITY)
     private Long id;
     private String userid;
     private String fullname;
