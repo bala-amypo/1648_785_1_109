@@ -10,30 +10,30 @@ import java.util.List;
 
 @Service
 public class userprofileimples implements userprofileservice{
-@Autowired userprofilerepository user;
+@Autowired userprofilerepository users;
     @Override
     public userprofile createUser(userprofile profile) {
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
         profile.setActive(true);
-        return user.save(profile);
+        return users.save(profile);
     }
      @Override
     public userprofile getUserById(Long id) {
-        return user.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return users.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public userprofile findByUserId(String userId) {
-        return user.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return users.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
     @Override
     public List<userprofile> getAllUsers() {
-        return user.findAll();
+        return users.findAll();
     }
     @Override
     public userprofile updateUserStatus(Long id, boolean active) {
         userprofile user = getUserById(id);
         user.setActive(active);
-        return user.save(user);
+        return users.save(user);
     }
 }
