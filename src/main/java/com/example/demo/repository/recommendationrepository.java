@@ -1,4 +1,7 @@
 package com.example.demo.repository;
-public class recommendationrepository{
-    
+
+import com.example.demo.entity.recommendation;
+import org.springframework.data.jpa.repository.JpaRepository;
+public interface recommendationrepository extends JpaRepository<recommendation, Long> {
+
 }
