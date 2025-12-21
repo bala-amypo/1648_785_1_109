@@ -1,5 +1,12 @@
 package com.example.demo.entity;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import lombok.*;
 
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class creditcard {
 
