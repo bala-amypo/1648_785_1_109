@@ -1,5 +1,4 @@
 package com.example.demo.service.impl;
-
 import com.example.demo.entity.userprofile;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserProfileRepository;
@@ -16,8 +15,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final PasswordEncoder passwordEncoder;
 
     // Constructor Injection (BEST PRACTICE)
-    public UserProfileServiceImpl(UserProfileRepository users,
-                                  PasswordEncoder passwordEncoder) {
+    public UserProfileServiceImpl(UserProfileRepository users,PasswordEncoder passwordEncoder) {
         this.users = users;
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,13 +30,13 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public userprofile getUserById(Long id) {
         return users.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(null);
     }
 
     @Override
     public userprofile findByUserId(String userId) {
         return users.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(null);
     }
 
     @Override
