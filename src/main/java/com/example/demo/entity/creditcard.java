@@ -4,24 +4,18 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class UserProfile {
+public class creditcard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String userId;
-
-    private String fullName;
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
-    private String role;
-    private Boolean active;
-
+    private Long userId;
+    private String cardName;
+    private String issuer;
+    private String cardType;
+    private Double annualFee;
+    private String status;
     private LocalDateTime createdAt;
 
     @PrePersist
