@@ -4,18 +4,21 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class userprofile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(unique = true)
+
+    // @Column(unique = true)
     private String userId;
 
     private String fullName;
 
-    @Column(unique = true)
+    // @Column(unique = true)
     private String email;
 
     private String password;
