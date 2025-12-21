@@ -12,7 +12,6 @@ public class userprofileimpl implements userprofileservice {
 
     private final userprofilerepository users;
 
-    // Constructor Injection
     public userprofileimpl(userprofilerepository users) {
         this.users = users;
     }
@@ -30,14 +29,13 @@ public class userprofileimpl implements userprofileservice {
 
     @Override
     public userprofile findByUserId(String userId) {
-        return users.findById(userId).orElse(null);
+        return users.findByUserId(userId).orElse(null);
     }
 
-   @Override
-    public userprofile findByUserId(String userId) {
-    return users.findByUserId(userId).orElse(null);
+    @Override
+    public List<userprofile> getAllUsers() {
+        return users.findAll();
     }
-
 
     @Override
     public userprofile updateUserStatus(Long id, boolean active) {
