@@ -11,12 +11,11 @@ public class userprofileserviceimples implements userprofileservice {
     private final userprofilerepository users;
     public userprofileserviceimples(userprofilerepository users) {
         this.users = users;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public userprofile createUser(userprofile profile) {
-        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
+        profile.setPassword(profile.getPassword());
         profile.setActive(true);
         return users.save(profile);
     }
