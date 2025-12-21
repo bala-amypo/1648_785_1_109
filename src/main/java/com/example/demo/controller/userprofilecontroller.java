@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
-@Tag(name = "User Profile")
 public class UserProfileController {
 
     private final UserProfileService service;
@@ -18,29 +16,28 @@ public class UserProfileController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/POST")
     public UserProfile create(@RequestBody UserProfile profile) {
         return service.createUser(profile);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/GET/{id}")
     public UserProfile getById(@PathVariable Long id) {
         return service.getUserById(id);
     }
 
-    @GetMapping
+    @GetMapping("/GET")
     public List<UserProfile> getAll() {
         return service.getAllUsers();
     }
 
-    @PutMapping("/{id}/status")
-    public UserProfile updateStatus(@PathVariable Long id,
-                                    @RequestParam boolean active) {
+    @PutMapping("/PUT/{id}/status")
+    public UserProfile updateStatus(@PathVariable Long id,@RequestParam boolean active) {
         return service.updateUserStatus(id, active);
     }
 
-    @GetMapping("/lookup/{userId}")
-    public UserProfile lookup(@PathVariable String userId) {
+    @GetMapping("/PUT/lookup/{userId}")
+    public userprofile lookup(@PathVariable String userId) {
         return service.findByUserId(userId);
     }
 }
