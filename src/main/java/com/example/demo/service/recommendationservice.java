@@ -1,12 +1,19 @@
 package com.example.demo.service;
-public class recommendationservice{
+
+import com.example.demo.entity.recommendation;
+import java.util.List;
+
+public interface recommendationservice {
+
+    // Generate recommendation based on purchase intent
     recommendation generateRecommendation(Long intentId);
-    ->fetch intent
-    ->fetch active cards for user
-    ->fetch active rules for card + category
-    ->calculated reward
-    
+
+    // Get recommendation by ID
     recommendation getRecommendationById(Long id);
-    recommendation getRecommendationByUSer(Long userId);
-    recommendation getAllRecommendations();
+
+    // Get recommendations by user
+    List<recommendation> getRecommendationByUser(Long userId);
+
+    // Get all recommendations
+    List<recommendation> getAllRecommendations();
 }
