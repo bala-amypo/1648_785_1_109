@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class userprofilecontroller {
 
-    @Autowired userprofileservice ser;
+    @Autowired userprofileservice se
 
     @PostMapping("/POST")
     public userprofile create(@RequestBody userprofile profile) {
