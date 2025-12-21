@@ -26,8 +26,12 @@ public class creditcardimpl implements creditcardservice {
     public creditcard updateCard(Long id, creditcard updated) {
         creditcard existing = repository.findById(id).orElse(null);
         if (existing != null) {
-            existing.setCardNumber(updated.getCardNumber());
-            existing.setCardHolderName(updated.getCardHolderName());
+            existing.setCardName(updated.getCardName());
+            existing.setIssuer(updated.getIssuer());
+            existing.setCardType(updated.getCardType());
+            existing.setAnnualFee(updated.getAnnualFee());
+            existing.setStatus(updated.getStatus());
+            existing.setUserId(updated.getUserId());
             return repository.save(existing);
         }
         return null;
