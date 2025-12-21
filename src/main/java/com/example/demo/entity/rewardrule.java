@@ -1,5 +1,12 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
 @Entity
-public class RewardRule {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class rewardrule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -9,4 +16,4 @@ public class RewardRule {
     private String rewardType;
     private Double multiplier;
     private Boolean active;
-}  based on this entity 
+}
