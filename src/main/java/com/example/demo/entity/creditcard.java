@@ -1,15 +1,31 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 @Entity
-public class creditcard{
+public class UserProfile {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDNETITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userid;
-    private String fullname;
+
+    @Column(unique = true)
+    private String userId;
+
+    private String fullName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
     private String role;
     private Boolean active;
-    private LocalDateTime createAt; 
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }
