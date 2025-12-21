@@ -19,12 +19,12 @@ public class userprofileimples implements userprofileservice{
     }
      @Override
     public userprofile getUserById(Long id) {
-        return users.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return users.findById(id).orElseThrow(null);
     }
 
     @Override
     public userprofile findByUserId(String userId) {
-        return users.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return users.findByUserId(userId).orElseThrow(null);
     }
     @Override
     public List<userprofile> getAllUsers() {
