@@ -38,6 +38,6 @@ public class userprofilecontroller {
 
     @GetMapping("/PUT/lookup/{userId}")
     public userprofile lookup(@PathVariable String userId) {
-        return ser.findByUserIds(userId);
+        return ser.findByUserId(userId);
     }
 }

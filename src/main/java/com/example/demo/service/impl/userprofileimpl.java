@@ -28,7 +28,7 @@ public class userprofileimpl implements userprofileservice {
     }
 
     @Override
-    public userprofile findByUserIds(String userId) {
+    public userprofile findByUserId(String userId) {
         return users.findByUserId(userId).orElse(null);
     }
 
