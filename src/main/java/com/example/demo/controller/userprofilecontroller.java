@@ -10,30 +10,30 @@ import java.util.List;
 @RestController
 public class userprofilecontroller {
 
-    @Autowired userprofileservice service;
+    @Autowired userprofileservice ser;
 
     @PostMapping("/POST")
     public UserProfile create(@RequestBody UserProfile profile) {
-        return service.createUser(profile);
+        return ser.createUser(profile);
     }
 
     @GetMapping("/GET/{id}")
     public UserProfile getById(@PathVariable Long id) {
-        return service.getUserById(id);
+        return ser.getUserById(id);
     }
 
     @GetMapping("/GET")
     public List<UserProfile> getAll() {
-        return service.getAllUsers();
+        return ser.getAllUsers();
     }
 
     @PutMapping("/PUT/{id}/status")
     public UserProfile updateStatus(@PathVariable Long id,@RequestParam boolean active) {
-        return service.updateUserStatus(id, active);
+        return ser.updateUserStatus(id, active);
     }
 
     @GetMapping("/PUT/lookup/{userId}")
     public userprofile lookup(@PathVariable String userId) {
-        return service.findByUserId(userId);
+        return ser.findByUserId(userId);
     }
 }
