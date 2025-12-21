@@ -44,7 +44,7 @@ public class creditcardcontroller {
     }
 
     // Get all credit cards
-    @GetMapping("/GET")
+    @GetMapping("/GET ")
     public List<creditcard> getAllCards() {
         return service.getAllCard();
     }
