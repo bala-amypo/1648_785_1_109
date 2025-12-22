@@ -37,6 +37,6 @@ public class gobalexception {
         body.put("error", status.getReasonPhrase());
         body.put("message", message);
 
-        return new ResponseEntity<>(body, status);
+        return new responceexception<>(body, status);
     }
 }
