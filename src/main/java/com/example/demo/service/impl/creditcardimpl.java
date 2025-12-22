@@ -6,15 +6,6 @@ import com.example.demo.service.creditcardservice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-@Service
-public class creditcardimpl implements creditcardservice {
-
-    private final creditcardrepository repository;
-    public creditcardimpl(creditcardrepository repository) {
-        this.repository = repository;
-    }
-
    @Service
 public class creditcardimpl implements creditcardservice {
 
@@ -28,7 +19,6 @@ public class creditcardimpl implements creditcardservice {
     public creditcard getCardById(Long id) {
         return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Card not found with id " + id));
     }
-}
 
     @Override
     public creditcard updateCard(Long id, creditcard updated) {
