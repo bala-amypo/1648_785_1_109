@@ -17,11 +17,15 @@ public class rewardruleimpl implements rewardruleservice {
         this.repository = repository;
     }
 
-    @Override
-    public rewardrule createRule(rewardrule rule) {
-        rule.setActive(true);
-        return repository.save(rule);
+  @Override
+public rewardrule createRule(rewardrule rule) {
+
+    if (rule.getMultiplier() <= 0) {
+        throw new badrequestexception("Multiplier must be greater than 0");
     }
+    rule.setActive(true);
+    return repository.save(rule);
+}
 
     @Override
     public rewardrule updateRule(Long id, rewardrule updated) {

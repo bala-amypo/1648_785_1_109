@@ -26,10 +26,11 @@ public class purchaseintentimpl implements purchaseintentservice {
         return repository.findByUserId(userId);
     }
 
-    @Override
+   @Override
     public purchaseintent getIntentById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
+        return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Purchase intent not found")
+            );
+}
 
     @Override
     public List<purchaseintent> getAllIntents() {
