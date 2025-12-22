@@ -12,18 +12,15 @@ public class creditcardcontroller {
 
     private final creditcardservice service;
 
-    // Constructor Injection
     public creditcardcontroller(creditcardservice service) {
         this.service = service;
     }
 
-    // Add new credit card
     @PostMapping("/POST")
     public creditcard addCard(@RequestBody creditcard card) {
         return service.addCard(card);
     }
 
-    // Update credit card by id
     @PutMapping("/PUT/{id}")
     public creditcard updateCard(
             @PathVariable Long id,
@@ -31,19 +28,16 @@ public class creditcardcontroller {
         return service.updateCard(id, updatedCard);
     }
 
-    // Get credit card by card id
     @GetMapping("/GET/{id}")
     public creditcard getCardById(@PathVariable Long id) {
         return service.getCardById(id);
     }
 
-    // Get credit card by user id
     @GetMapping("/GET/user/{userId}")
     public creditcard getCardByUser(@PathVariable Long userId) {
         return service.getCardByUser(userId);
     }
 
-    // Get all credit cards
     @GetMapping("/GET ")
     public List<creditcard> getAllCards() {
         return service.getAllCard();

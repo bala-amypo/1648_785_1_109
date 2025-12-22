@@ -11,7 +11,6 @@ public class userprofilecontroller {
 
      private final userprofileservice ser;
 
-    // Constructor Injection
     public userprofilecontroller(userprofileservice ser) {
         this.ser = ser;
     }
