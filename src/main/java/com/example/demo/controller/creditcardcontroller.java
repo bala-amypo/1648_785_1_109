@@ -28,10 +28,11 @@ public class creditcardcontroller {
         return service.updateCard(id, updatedCard);
     }
 
-    @GetMapping("/GET/{id}")
-    public creditcard getCardById(@PathVariable Long id) {
-        return service.getCardById(id);
-    }
+  @GetMapping("/GET/{id}")
+    public creditcard getCard(@PathVariable Long id) {
+    return service.getCardById(id);
+}
+
 
     @GetMapping("/GET/user/{userId}")
     public creditcard getCardByUser(@PathVariable Long userId) {

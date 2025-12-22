@@ -16,9 +16,18 @@ public class creditcardimpl implements creditcardservice {
     }
 
     @Override
+    public creditcard getCardById(Long id) {
+        return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Credit card not found with id " + id));
+    }
+
+    @Override
     public creditcard addCard(creditcard card) {
+        if (card.getAnnualFee() < 0) {
+            throw new BadRequestException("Annual fee cannot be negative");
+        }
         return repository.save(card);
     }
+}
 
     @Override
     public creditcard updateCard(Long id, creditcard updated) {
