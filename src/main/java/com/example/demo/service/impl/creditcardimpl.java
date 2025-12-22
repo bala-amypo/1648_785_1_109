@@ -11,8 +11,6 @@ import java.util.List;
 public class creditcardimpl implements creditcardservice {
 
     private final creditcardrepository repository;
-
-    // Constructor Injection
     public creditcardimpl(creditcardrepository repository) {
         this.repository = repository;
     }

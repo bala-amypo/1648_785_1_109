@@ -33,8 +33,6 @@ public class recommendationimpl implements recommendationservice {
         recommendation rec = new recommendation();
         rec.setUserId(intent.getUserId());
         rec.setPurchaseIntentId(intent.getId());
-
-        // temporary static values (can be replaced later)
         rec.setRecommendedCardId(1L);
         rec.setExpectedRewardValue(0.0);
         rec.setCalculationDetailsJson("Reward calculation pending");

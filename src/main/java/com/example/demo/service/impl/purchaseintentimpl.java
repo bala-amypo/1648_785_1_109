@@ -12,7 +12,6 @@ public class purchaseintentimpl implements purchaseintentservice {
 
     private final purchaseintentrepository repository;
 
-    // Constructor Injection
     public purchaseintentimpl(purchaseintentrepository repository) {
         this.repository = repository;
     }
