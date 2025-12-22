@@ -12,7 +12,6 @@ public class rewardruleimpl implements rewardruleservice {
 
     private final rewardrulerepository repository;
 
-    // Constructor Injection
     public rewardruleimpl(rewardrulerepository repository) {
         this.repository = repository;
     }
