@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.entity.purchaseintent;
 import com.example.demo.repository.purchaseintentrepository;
 import com.example.demo.service.purchaseintentservice;
@@ -28,7 +29,7 @@ public class purchaseintentimpl implements purchaseintentservice {
 
    @Override
     public purchaseintent getIntentById(Long id) {
-        return repository.findById(id).orElseThrow(() ->new resourcenotexception("Purchase intent not found"));
+        return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Purchase intent not found"));
 }
 
     @Override

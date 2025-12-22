@@ -1,5 +1,5 @@
 package com.example.demo.service.impl;
-
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.entity.rewardrule;
 import com.example.demo.repository.rewardrulerepository;
 import com.example.demo.service.rewardruleservice;
@@ -21,7 +21,7 @@ public class rewardruleimpl implements rewardruleservice {
 public rewardrule createRule(rewardrule rule) {
 
     if (rule.getMultiplier() <= 0) {
-        throw new badrequestexception("Multiplier must be greater than 0");
+        throw new BadRequestException("Multiplier must be greater than 0");
     }
     rule.setActive(true);
     return repository.save(rule);
