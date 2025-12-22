@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reward-rules")
+@RequestMapping("/Rewrdrule")
 public class rewardrulecontroller {
 
     private final rewardruleservice service;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recommendations")
+@RequestMapping("/Recommendation")
 public class recommendationcontroller {
 
     private final recommendationservice service;

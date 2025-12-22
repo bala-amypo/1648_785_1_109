@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/purchase-intents")
+@RequestMapping("/PurchaseIntent")
 public class purchaseintentcontroller {
 
     private final purchaseintentservice service;
