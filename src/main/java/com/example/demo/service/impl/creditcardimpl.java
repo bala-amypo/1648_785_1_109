@@ -14,11 +14,11 @@ public class creditcardimpl implements creditcardservice {
     public creditcardimpl(creditcardrepository repository) {
         this.repository = repository;
     }
-
     @Override
-    public creditcard getCardById(Long id) {
-        return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Card not found with id " + id));
+    public creditcard addCard(creditcard card) {
+    return repository.save(card);   
     }
+
 
     @Override
     public creditcard updateCard(Long id, creditcard updated) {
