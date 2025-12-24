@@ -1,7 +1,7 @@
 package com.example.demo.service;
 import com.example.demo.entity.userprofile;
 import java.util.List;
-imort java.util.Optional;
+import java.util.Optional;
 
 public interface userprofileservice {
 
