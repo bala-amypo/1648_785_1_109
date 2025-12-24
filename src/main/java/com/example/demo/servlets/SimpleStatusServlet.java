@@ -12,10 +12,10 @@ import java.io.IOException;
 
 @SpringBootApplication
 @ServletComponentScan
-public class SimpleStats {
+public class SimpleStatusServlet {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(SimpleStatusServlet.class, args);
     }
 
     // ===== STATUS SERVLET =====
