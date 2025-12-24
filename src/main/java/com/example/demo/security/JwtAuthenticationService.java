@@ -11,7 +11,8 @@ public class JwtAuthenticationService {
         String username = request.getUsername();
         String password = request.getPassword();
 
-        if ("admin".equals(username) && "admin".equals(password)) {
+
+        if ("Naveen1810".equals(username) && "Naveen@cr7".equals(password)) {
             return "dummy-jwt-token";
         }
 
