@@ -25,6 +25,8 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.expiration = expiration;
     }
+
+    // ✅ USED BY AuthController & AuthService
     public String generateToken(Long userId, String email, String role) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -40,7 +42,22 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims getClaims(String token) {
+    // ✅ USED BY JwtAuthenticationFilter
+    public boolean isTokenValid(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // ✅ USED BY JwtAuthenticationFilter
+    public String extractUsername(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
