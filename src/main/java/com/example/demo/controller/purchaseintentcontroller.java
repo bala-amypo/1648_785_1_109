@@ -1,40 +1,31 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import com.example.demo.entity.purchaseintent;
-// import com.example.demo.service.purchaseintentservice;
-// import org.springframework.web.bind.annotation.*;
+import com.example.demo.entity.PurchaseIntentRecord;
+import com.example.demo.service.PurchaseIntentService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-// import java.util.List;
-// @CrossOrigin(origins = "*")
-// @RestController
-// @RequestMapping("/PurchaseIntent")
-// public class purchaseintentcontroller {
+@RestController
+@RequestMapping("/api/intents")
+public class PurchaseIntentController {
+    private final PurchaseIntentService service;
 
-//     private final purchaseintentservice service;
+    public PurchaseIntentController(PurchaseIntentService service) {
+        this.service = service;
+    }
 
-//     public purchaseintentcontroller(purchaseintentservice service) {
-//         this.service = service;
-//     }
+    @PostMapping
+    public PurchaseIntentRecord create(@RequestBody PurchaseIntentRecord intent) {
+        return service.createIntent(intent);
+    }
 
-//     @PostMapping("/POST")
-//     public purchaseintent createIntent(@RequestBody purchaseintent intent) {
-//         return service.createIntent(intent);
-//     }
+    @GetMapping("/user/{userId}")
+    public List<PurchaseIntentRecord> getByUser(@PathVariable Long userId) {
+        return service.getIntentsByUser(userId);
+    }
 
-//     @GetMapping("/GET/user/{userId}")
-//     public List<purchaseintent> getIntentsByUser(@PathVariable Long userId) {
-//         return service.getIntentsByUser(userId);
-//     }
-
-//     @GetMapping("/GET/{id}")
-//     public purchaseintent getIntentById(@PathVariable Long id) {
-//         return service.getIntentById(id);
-//     }
-    
-
-
-//     @GetMapping("/GET")
-//     public List<purchaseintent> getAllIntents() {
-//         return service.getAllIntents();
-//     }
-// }
+    @GetMapping
+    public List<PurchaseIntentRecord> list() {
+        return service.getAllIntents();
+    }
+}
