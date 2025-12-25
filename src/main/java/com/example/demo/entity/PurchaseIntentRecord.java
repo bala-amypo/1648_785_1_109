@@ -1,12 +1,9 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import lombok.*;
+
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class purchaseintent {
+public class PurchaseIntentRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,5 +13,6 @@ public class purchaseintent {
     private Double amount;
     private String category;
     private String merchant;
-    private LocalDateTime intentDate;
+
+    // getters & setters
 }

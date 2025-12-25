@@ -1,12 +1,10 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombok.*;
+
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class creditcard {
+public class CreditCardRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,13 +13,14 @@ public class creditcard {
     private Long userId;
     private String cardName;
     private String issuer;
-    private String cardType;
-    private Double annualFee;
     private String status;
+    private Double annualFee;
     private LocalDateTime createdAt;
 
     @PrePersist
-    void created() {
-        createdAt = LocalDateTime.now();
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
+
+    // getters & setters
 }
