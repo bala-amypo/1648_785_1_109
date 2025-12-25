@@ -9,12 +9,22 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fullName;   // ✅ ADD THIS
     private String email;
     private String password;
     private String role;
 
     public Long getId() {
         return id;
+    }
+
+    // ✅ fullName getter/setter
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
