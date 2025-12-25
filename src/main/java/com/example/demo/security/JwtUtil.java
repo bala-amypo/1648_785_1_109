@@ -24,14 +24,14 @@ public class JwtUtil {
         this.expiration = expiration;
     }
 
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
+   public String generateToken(String username) {
+    return Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+}
 
     public boolean isTokenValid(String token) {
         try {
