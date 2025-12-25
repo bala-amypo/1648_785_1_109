@@ -1,68 +1,66 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 @Component
-public class JwtUtil {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final Key key;
-    private final long expiration;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
-    public JwtUtil(
-            @Value("${app.jwt.secret}") String secret,
-            @Value("${app.jwt.expiration}") long expiration
-    ) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expiration = expiration;
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
 
-    // ✅ GENERATE TOKEN (3 params)
-    public String generateToken(Long userId, String email, String role) {
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", userId);
-        claims.put("role", role);
+        String authHeader = request.getHeader("Authorization");
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-    // ✅ EXTRACT USERNAME (EMAIL)
-    public String extractUsername(String token) {
-        return getClaims(token).getSubject();
-    }
+            String token = authHeader.substring(7);
 
-    // ✅ VALIDATE TOKEN
-    public boolean isTokenValid(String token) {
-        try {
-            getClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
+            if (jwtUtil.isTokenValid(token)) {
+
+                String username = jwtUtil.extractUsername(token);
+
+                UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
+            }
         }
-    }
 
-    // ✅ COMMON METHOD
-    private Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        filterChain.doFilter(request, response);
     }
 }
