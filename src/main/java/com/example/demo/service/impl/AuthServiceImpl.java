@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserProfile savedUser = userService.createUser(user);
 
-        String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+        // String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
         return new JwtResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
     }
 
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("User account is inactive");
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
+        // String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
         return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
     }
 }

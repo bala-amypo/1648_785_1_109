@@ -35,7 +35,7 @@ public class AuthController {
         u.setUserId(java.util.UUID.randomUUID().toString());
         u.setRole(req.getRole());
         UserProfile saved = userService.createUser(u);
-        String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), saved.getRole());
+        // String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), saved.getRole());
         return ResponseEntity.ok(new JwtResponse(token, saved.getId(), saved.getEmail(), saved.getRole()));
     }
 
@@ -43,7 +43,7 @@ public class AuthController {
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest req) {
         authManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
         UserProfile u = userRepo.findByEmail(req.getEmail()).orElseThrow();
-        String token = jwtUtil.generateToken(u.getId(), u.getEmail(), u.getRole());
+        // String token = jwtUtil.generateToken(u.getId(), u.getEmail(), u.getRole());
         return ResponseEntity.ok(new JwtResponse(token, u.getId(), u.getEmail(), u.getRole()));
     }
 }
