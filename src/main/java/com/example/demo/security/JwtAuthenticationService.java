@@ -1,21 +1,21 @@
-package com.example.demo.security;
+// package com.example.demo.security;
 
-import com.example.demo.dto.LoginRequest;
-import org.springframework.stereotype.Service;
+// import com.example.demo.dto.LoginRequest;
+// import org.springframework.stereotype.Service;
 
-@Service
-public class JwtAuthenticationService {
+// @Service
+// public class JwtAuthenticationService {
 
-    public String authenticate(LoginRequest request) {
+//     public String authenticate(LoginRequest request) {
 
-        String username = request.getUsername();
-        String password = request.getPassword();
+//         String username = request.getUsername();
+//         String password = request.getPassword();
 
 
-        if ("Naveen1810".equals(username) && "Naveen@cr7".equals(password)) {
-            return "dummy-jwt-token";
-        }
+//         if ("Naveen1810".equals(username) && "Naveen@cr7".equals(password)) {
+//             return "dummy-jwt-token";
+//         }
 
-        throw new RuntimeException("Invalid credentials");
-    }
-}
+//         throw new RuntimeException("Invalid credentials");
+//     }
+// }
