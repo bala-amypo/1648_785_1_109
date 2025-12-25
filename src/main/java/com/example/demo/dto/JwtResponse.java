@@ -14,6 +14,14 @@ public class JwtResponse {
         this.token = token;
     }
 
+    // ✅ ADD THIS
+    public JwtResponse(Long userId, String email, String role) {
+        this.userId = userId;
+        this.email = email;
+        this.role = role;
+        this.token = "";
+    }
+
     public Long getUserId() {
         return userId;
     }
