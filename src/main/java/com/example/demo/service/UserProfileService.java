@@ -1,9 +1,10 @@
 package com.example.demo.service;
-import com.example.demo.entity.userprofile;
-import java.util.List;
+
+import com.example.demo.entity.UserProfile;  // ✅ CORRECT CASE
 
 public interface UserProfileService {
-    UserProfile createUser(UserProfile u);
-    UserProfile getUserById(Long id);
-    List<UserProfile> getAllUsers();
+
+    UserProfile register(UserProfile user);
+
+    UserProfile login(String email, String password);
 }
