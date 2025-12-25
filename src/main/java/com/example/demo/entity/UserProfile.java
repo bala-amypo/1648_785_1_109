@@ -1,20 +1,13 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class UserProfile {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String userId;   // 👈 ADD THIS
-
     private String fullName;
     private String email;
     private String password;
-
-    // getters & setters
+    private String role;
 }
-
