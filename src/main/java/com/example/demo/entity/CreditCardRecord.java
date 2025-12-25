@@ -1,5 +1,3 @@
-entity
-
 
 package com.example.demo.entity;
 
