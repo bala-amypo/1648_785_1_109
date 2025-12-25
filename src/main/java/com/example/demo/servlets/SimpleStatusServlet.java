@@ -1,14 +1,13 @@
-package com.example.demo.servlet;
+// package com.example.demo;
 
-import jakarta.servlet.http.*;
-import java.io.IOException;
+// import org.springframework.boot.SpringApplication;
+// import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SimpleStatusServlet extends HttpServlet {
+// @SpringBootApplication
+// public class DemoApplication {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/plain");
-        resp.getWriter().write("Credit Card Reward Maximizer is running");
-        resp.getWriter().flush();
-    }
-}
+// 	public static void main(String[] args) {
+// 		SpringApplication.run(DemoApplication.class, args);
+// 	}
+
+// }
