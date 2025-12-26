@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.PurchaseIntent;
-import com.example.demo.repository.PurchaseIntentRepository;
+import com.example.demo.repository.PurchaseIntentRecordRepository;
 import com.example.demo.service.PurchaseIntentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PurchaseIntentServiceImpl implements PurchaseIntentService {
 
-    private final PurchaseIntentRepository repository;
+    private final PurchaseIntentRecordRepository repository;
 
     @Override
     public PurchaseIntent addIntent(PurchaseIntent intent) {
