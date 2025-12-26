@@ -6,6 +6,8 @@ import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.service.UserProfileService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
 
@@ -24,16 +26,24 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfile getUserByEmail(String email) {
         return repository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
-    public UserProfile activateUser(Long id) {
-        UserProfile user = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
-        user.setActive(true);
+    public UserProfile getUserById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<UserProfile> getAllUsers() {
+        return repository.findAll();
+    }
+
+    @Override
+    public UserProfile updateUserStatus(Long id, boolean active) {
+        UserProfile user = getUserById(id);
+        user.setActive(active);
         return repository.save(user);
     }
 }
