@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data // generates getters, setters, toString, equals, hashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreditCardRecord {

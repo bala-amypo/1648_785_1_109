@@ -1,46 +1,36 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.CreditCardRecord;
+import com.example.demo.repository.CreditCardRepository;
 import com.example.demo.service.CreditCardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CreditCardServiceImpl implements CreditCardService {
 
-    // Temporary in-memory storage for demo purposes
-    private final List<CreditCardRecord> cards = new ArrayList<>();
+    private final CreditCardRepository repository;
 
     @Override
     public CreditCardRecord addCard(CreditCardRecord card) {
-        cards.add(card);
-        return card;
+        return repository.save(card);
     }
 
     @Override
-    public CreditCardRecord getCardById(Long cardId) {
-        Optional<CreditCardRecord> card = cards.stream()
-                .filter(c -> c.getId().equals(cardId))
-                .findFirst();
-        return card.orElse(null);
+    public CreditCardRecord getCardById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public List<CreditCardRecord> getCardsByUser(Long userId) {
-        List<CreditCardRecord> userCards = new ArrayList<>();
-        for (CreditCardRecord card : cards) {
-            if (card.getUserId().equals(userId)) {
-                userCards.add(card);
-            }
-        }
-        return userCards;
+        return repository.findByUserId(userId);
     }
 
     @Override
     public List<CreditCardRecord> getAllCards() {
-        return new ArrayList<>(cards);
+        return repository.findAll();
     }
 }
