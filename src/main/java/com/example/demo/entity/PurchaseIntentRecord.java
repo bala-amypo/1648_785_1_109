@@ -1,17 +1,17 @@
 package com.example.demo.entity;
-
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
-@Data
 public class PurchaseIntentRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private Long userId;
-    private Double amount;
     private String category;
-    private String merchant;
+    private double amount;
+
+    // Add these methods:
+    public Long getId() { return id; }
+    public Long getUserId() { return userId; }
+    public String getCategory() { return category; }
+    public double getAmount() { return amount; }
 }
