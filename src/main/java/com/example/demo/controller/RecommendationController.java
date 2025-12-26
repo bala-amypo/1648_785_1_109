@@ -1,31 +1,34 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.CreditCardRecord;
+import com.example.demo.entity.RecommendationRecord;
 import com.example.demo.service.RecommendationEngineService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommendations")
-@RequiredArgsConstructor
 public class RecommendationController {
 
     private final RecommendationEngineService recommendationService;
 
-    @GetMapping("/generate/{userId}")
-    public CreditCardRecord generateRecommendation(@PathVariable Long userId) {
-        return recommendationService.generateRecommendation(userId);
+    public RecommendationController(RecommendationEngineService recommendationService) {
+        this.recommendationService = recommendationService;
     }
 
-    @GetMapping("/user/{userId}")
-    public List<CreditCardRecord> getRecommendationsByUser(@PathVariable Long userId) {
-        return recommendationService.getRecommendationsByUser(userId);
+    @PostMapping("/generate/{intentId}")
+    public ResponseEntity<RecommendationRecord> generate(@PathVariable Long intentId) {
+        return ResponseEntity.ok(recommendationService.generateRecommendation(intentId));
     }
 
     @GetMapping
-    public List<CreditCardRecord> getAllRecommendations() {
-        return recommendationService.getAllRecommendations();
+    public ResponseEntity<List<RecommendationRecord>> getAll() {
+        return ResponseEntity.ok(recommendationService.getAllRecommendations());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<RecommendationRecord>> getByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(recommendationService.getRecommendationsByUser(userId));
     }
 }
