@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/api/v1/auth")
 @Tag(name = "Auth")
 public class AuthController {
 
@@ -16,16 +19,20 @@ public class AuthController {
         this.service = service;
     }
 
-    public ResponseEntity<?> register(RegisterRequest request) {
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             return ResponseEntity.ok(service.register(request));
         } catch (Exception e) {
-            // 🔥 REQUIRED: return 400 when email exists
-            return ResponseEntity.badRequest().build();
+            // Returns 400 if registration fails (e.g. email already exists)
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    public ResponseEntity<AuthResponse> login(AuthRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
+        // If credentials are wrong, service.login will throw AuthenticationException
+        // which results in the "Bad credentials" message you are seeing.
         return ResponseEntity.ok(service.login(request));
     }
 }
