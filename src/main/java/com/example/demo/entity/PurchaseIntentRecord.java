@@ -1,31 +1,28 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class PurchaseIntentRecord {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class PurchaseIntent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
-    private String category;
-    private double amount;
 
-    public Long getId() {
-        return id;
-    }
+    private String product;
 
-    public Long getUserId() {
-        return userId;
-    }
+    private Double amount;
 
-    public String getCategory() {
-        return category;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
+    private String status;
 }

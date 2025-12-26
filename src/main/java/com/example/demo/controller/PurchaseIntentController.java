@@ -1,41 +1,36 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.PurchaseIntentRecord;
+import com.example.demo.entity.PurchaseIntent;
 import com.example.demo.service.PurchaseIntentService;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/intents")
+@RequestMapping("/api/purchase-intents")
+@RequiredArgsConstructor
 public class PurchaseIntentController {
 
-    private final PurchaseIntentService intentService;
-
-    public PurchaseIntentController(PurchaseIntentService intentService) {
-        this.intentService = intentService;
-    }
+    private final PurchaseIntentService purchaseIntentService;
 
     @PostMapping
-    public ResponseEntity<PurchaseIntentRecord> createIntent(
-            @RequestBody PurchaseIntentRecord intent) {
-
-        return ResponseEntity.ok(intentService.createIntent(intent));
+    public PurchaseIntent addIntent(@RequestBody PurchaseIntent intent) {
+        return purchaseIntentService.addIntent(intent);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseIntentRecord> getIntent(@PathVariable Long id) {
-        return ResponseEntity.ok(intentService.getIntentById(id));
+    public PurchaseIntent getIntentById(@PathVariable Long id) {
+        return purchaseIntentService.getIntentById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PurchaseIntentRecord>> getByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(intentService.getIntentsByUser(userId));
+    public List<PurchaseIntent> getIntentsByUser(@PathVariable Long userId) {
+        return purchaseIntentService.getIntentsByUser(userId);
     }
 
     @GetMapping
-    public ResponseEntity<List<PurchaseIntentRecord>> getAllIntents() {
-        return ResponseEntity.ok(intentService.getAllIntents());
+    public List<PurchaseIntent> getAllIntents() {
+        return purchaseIntentService.getAllIntents();
     }
 }
