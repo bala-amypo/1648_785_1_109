@@ -1,29 +1,26 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RewardRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long cardId;
-    private String category;
-    private double multiplier;
-    private boolean active;
+    private String ruleName;
 
-    public Long getId() { return id; }
+    private String description;
 
-    public Long getCardId() { return cardId; }
-
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
-    public double getMultiplier() { return multiplier; }
-    public void setMultiplier(double multiplier) { this.multiplier = multiplier; }
-
-    public boolean getActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    private Double rewardPercentage;
 }

@@ -2,33 +2,35 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RewardRule;
 import com.example.demo.service.RewardRuleService;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/rules")
+@RequestMapping("/api/reward-rules")
+@RequiredArgsConstructor
 public class RewardRuleController {
 
-    private final RewardRuleService ruleService;
-
-    public RewardRuleController(RewardRuleService ruleService) {
-        this.ruleService = ruleService;
-    }
+    private final RewardRuleService rewardRuleService;
 
     @PostMapping
-    public ResponseEntity<RewardRule> createRule(@RequestBody RewardRule rule) {
-        return ResponseEntity.ok(ruleService.createRule(rule));
+    public RewardRule addRewardRule(@RequestBody RewardRule rule) {
+        return rewardRuleService.addRewardRule(rule);
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<RewardRule>> getActiveRules() {
-        return ResponseEntity.ok(ruleService.getActiveRules());
+    @GetMapping("/{id}")
+    public RewardRule getRewardRuleById(@PathVariable Long id) {
+        return rewardRuleService.getRewardRuleById(id);
     }
 
     @GetMapping
-    public ResponseEntity<List<RewardRule>> getAllRules() {
-        return ResponseEntity.ok(ruleService.getAllRules());
+    public List<RewardRule> getAllRewardRules() {
+        return rewardRuleService.getAllRewardRules();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRewardRule(@PathVariable Long id) {
+        rewardRuleService.deleteRewardRule(id);
     }
 }
