@@ -1,27 +1,29 @@
-package com.example.demo.entity;
+ExtraStudent(Entity)
 
-import jakarta.persistence.*;
+package com.example.OneToMany.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExtraStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Ensure this is Long (capital L)
-
+    private Long id;
+    private String name;
+    @Email(message = "Invalid email address")
     private String email;
     private String password;
     private String role;
 
-    // The missing method:
-    public Long getId() {
-        return id;
-    }
-
-    // Standard getters and setters for other fields
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
 }
