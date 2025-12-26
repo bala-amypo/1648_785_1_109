@@ -1,7 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.UserProfile;
-
 public class RegisterRequest {
 
     private String userId;
@@ -10,7 +8,8 @@ public class RegisterRequest {
     private String password;
     private String role;
 
-    public RegisterRequest() {}
+    public RegisterRequest() {
+    }
 
     public String getUserId() {
         return userId;
@@ -50,16 +49,5 @@ public class RegisterRequest {
     
     public void setRole(String role) {
         this.role = role;
-    }
-
-    /* Helper for controller/service */
-    public UserProfile toUserProfile() {
-        UserProfile user = new UserProfile();
-        user.setUserId(this.userId);
-        user.setFullName(this.fullName);
-        user.setEmail(this.email);
-        user.setPassword(this.password);
-        user.setRole(this.role);
-        return user;
     }
 }
