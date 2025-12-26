@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/CreditCardController")
+@RestController
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
 public class CreditCardController {
