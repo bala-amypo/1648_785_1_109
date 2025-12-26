@@ -1,26 +1,28 @@
-package com.example.demo.dto;
+package com.example.demo.controller;
 
-public class LoginRequest {
+import com.example.demo.dto.LoginRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-    private String email;
-    private String password;
+@RestController
+@RequestMapping("/api/auth")
+public class LoginController {
 
-    public LoginRequest() {
-    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        
+        // 1. Extract data from your DTO
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
 
-    public String getEmail() {
-        return email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
+        // 2. Dummy validation logic 
+        // (In a real app, you would use a Service to check your Database)
+        if ("admin@example.com".equals(email) && "password123".equals(password)) {
+            return ResponseEntity.ok("Login successful!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body("Invalid email or password");
+        }
     }
 }
