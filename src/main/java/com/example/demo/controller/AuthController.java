@@ -1,98 +1,70 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.JwtResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.UserProfile;
-import com.example.demo.repository.UserProfileRepository;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.entity.ExtraStudent;
 import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserProfileService;
+import com.example.demo.service.ExtraStudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*") // Allows frontend connection
 public class AuthController {
 
-    private final UserProfileService userService;
-    private final UserProfileRepository userRepo;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private ExtraStudentService ser;
 
-    public AuthController(UserProfileService userService,
-                          UserProfileRepository userRepo,
-                          AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.userRepo = userRepo;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private JwtUtil util;
 
     /**
-     * Handles User Registration
+     * Register/Add a new student with an encoded password
      */
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        try {
-            UserProfile user = new UserProfile();
-            user.setUserId(request.getUserId());
-            user.setFullName(request.getFullName());
-            user.setEmail(request.getEmail());
-            user.setPassword(request.getPassword()); // Ensure this is encoded in your Service!
-            user.setRole(request.getRole());
-
-            UserProfile saved = userService.createUser(user);
-            return ResponseEntity.ok(generateJwtResponse(saved));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
-        }
+    @PostMapping("/add")
+    public ResponseEntity<ExtraStudent> addExtraStudent(@RequestBody ExtraStudent stu) {
+        // Encode the password before saving to the database
+        stu.setPassword(encoder.encode(stu.getPassword()));
+        ExtraStudent savedStudent = ser.saveExtraStudent(stu);
+        return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
     /**
-     * Handles User Login and Token Issuance
+     * Login logic comparing raw password with encoded password
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
-            // 1. Authenticate user credentials
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            // 1. Fetch student by email
+            ExtraStudent student = ser.CheckEmail(request.getEmail());
+            
+            if (student == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found");
+            }
+
+            // 2. Check if password matches
+            if (!encoder.matches(request.getPassword(), student.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            }
+
+            // 3. Generate JWT Token
+            String token = util.generateToken(
+                    student.getEmail(),
+                    student.getRole()
             );
 
-            // 2. Fetch user from database
-            UserProfile user = userRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("User not found"));
+            // 4. Return Response
+            return ResponseEntity.ok(new AuthResponse(token, student.getRole()));
 
-            // 3. Return the token and user info
-            return ResponseEntity.ok(generateJwtResponse(user));
-
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
-    }
-
-    /**
-     * Helper method to reduce code duplication
-     */
-    private JwtResponse generateJwtResponse(UserProfile user) {
-        String token = jwtUtil.generateToken(
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-
-        return new JwtResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
     }
 }
