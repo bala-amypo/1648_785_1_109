@@ -1,86 +1,40 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.JwtResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.UserProfile;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.repository.UserProfileRepository;
-import com.example.demo.security.JwtUtil;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.security.JwtService;
 import com.example.demo.service.AuthService;
-import com.example.demo.service.UserProfileService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
-@Transactional
 public class AuthServiceImpl implements AuthService {
 
-    private final UserProfileService userService;
-    private final UserProfileRepository userProfileRepository;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    // EXACT constructor order as per Technical Constraints Step 0
-    public AuthServiceImpl(
-            UserProfileService userService,
-            UserProfileRepository userProfileRepository,
-            AuthenticationManager authenticationManager,
-            JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.userProfileRepository = userProfileRepository;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private JwtService jwtService;
 
     @Override
-    public JwtResponse register(RegisterRequest req) {
-        if (userProfileRepository.existsByEmail(req.getEmail())) {
-            throw new BadRequestException("Event code already exists");
-        }
-        
-        UserProfile user = new UserProfile();
-        user.setFullName(req.getFullName());
-        user.setEmail(req.getEmail());
-        user.setPassword(req.getPassword());
-        user.setRole(req.getRole() != null ? req.getRole() : "USER");
-        
-        // Use userId from request if available, otherwise generate one
-        String userIdValue = (req.getUserId() != null && !req.getUserId().isEmpty()) 
-                             ? req.getUserId() 
-                             : UUID.randomUUID().toString();
-        
-        if (userProfileRepository.existsByUserId(userIdValue)) {
-            throw new BadRequestException("User ID already exists");
-        }
-        user.setUserId(userIdValue);
-        user.setActive(true);
+    public AuthResponse login(AuthRequest request) {
 
-        UserProfile savedUser = userService.createUser(user);
-
-        // String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
-        return new JwtResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
-    }
-
-    @Override
-    public JwtResponse login(LoginRequest req) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
+        // 1. Authenticate user
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
         );
 
-        UserProfile user = userProfileRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new BadRequestException("User not found"));
+        // 2. Generate token ✅ (THIS WAS MISSING)
+        String token = jwtService.generateToken(authentication.getName());
 
-        if (user.getActive() != null && !user.getActive()) {
-            throw new BadRequestException("User account is inactive");
-        }
-
-        // String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
-        return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
+        // 3. Return response
+        return new AuthResponse(token);
     }
 }
