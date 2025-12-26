@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.ExtraStudent;
-import com.example.demo.repository.ExtraStudentRepo;
+import com.example.demo.repository.ExtraStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private ExtraStudentRepo repo;
+    private ExtraStudentRepository repo;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
