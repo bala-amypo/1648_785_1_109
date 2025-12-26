@@ -31,6 +31,11 @@ public class UserProfileController {
     public ResponseEntity<List<UserProfile>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    @PutMapping("/{id}/status")
+public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestParam boolean active) {
+    userService.updateUserStatus(id, active);
+    return ResponseEntity.ok("User status updated successfully");
+}
 
     @PutMapping("/{id}/status")
     public ResponseEntity<UserProfile> updateStatus(

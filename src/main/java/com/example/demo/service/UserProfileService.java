@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface UserProfileService {
     UserProfile createUser(UserProfile profile);
-    void registerUser(RegisterRequest request); // Add this line!
+    void registerUser(RegisterRequest request);
     UserProfile getUserById(Long id);
     List<UserProfile> getAllUsers();
+    
+    // ADD THIS METHOD TO FIX THE ERROR
+    void updateUserStatus(Long id, boolean active);
 }

@@ -19,31 +19,15 @@ public class UserProfileServiceImpl implements UserProfileService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Existing methods (registerUser, createUser, etc.) should remain here...
+
     @Override
-    public void registerUser(RegisterRequest request) {
-        UserProfile user = new UserProfile();
-        user.setUserId(request.getUserId());
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setRole(request.getRole());
-        // This fixes the setPassword error
-        user.setPassword(passwordEncoder.encode(request.getPassword())); 
+    public void updateUserStatus(Long id, boolean active) {
+        UserProfile user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        user.setActive(active);
         userRepository.save(user);
     }
-
-    @Override
-    public UserProfile createUser(UserProfile profile) {
-        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-        return userRepository.save(profile);
-    }
-
-    @Override
-    public UserProfile getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<UserProfile> getAllUsers() {
-        return userRepository.findAll();
-    }
+    
+    // Ensure getUserById, getAllUsers, etc., are also implemented
 }
