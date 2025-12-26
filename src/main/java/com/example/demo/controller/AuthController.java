@@ -7,8 +7,10 @@ import com.example.demo.entity.UserProfile;
 import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserProfileService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,62 +33,66 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Handles User Registration
+     */
     @PostMapping("/register")
-    public ResponseEntity<JwtResponse> register(
-            @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        try {
+            UserProfile user = new UserProfile();
+            user.setUserId(request.getUserId());
+            user.setFullName(request.getFullName());
+            user.setEmail(request.getEmail());
+            user.setPassword(request.getPassword()); // Ensure this is encoded in your Service!
+            user.setRole(request.getRole());
 
-        UserProfile user = new UserProfile();
-        user.setUserId(request.getUserId());
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
-
-        UserProfile saved = userService.createUser(user);
-
-        String token = jwtUtil.generateToken(
-                saved.getId(),
-                saved.getEmail(),
-                saved.getRole()
-        );
-
-        JwtResponse response = new JwtResponse(
-                token,
-                saved.getId(),
-                saved.getEmail(),
-                saved.getRole()
-        );
-
-        return ResponseEntity.ok(response);
+            UserProfile saved = userService.createUser(user);
+            return ResponseEntity.ok(generateJwtResponse(saved));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
+        }
     }
 
+    /**
+     * Handles User Login and Token Issuance
+     */
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(
-            @RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            // 1. Authenticate user credentials
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+            // 2. Fetch user from database
+            UserProfile user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
 
-        UserProfile user = userRepo.findByEmail(request.getEmail())
-                .orElseThrow();
+            // 3. Return the token and user info
+            return ResponseEntity.ok(generateJwtResponse(user));
 
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+
+    /**
+     * Helper method to reduce code duplication
+     */
+    private JwtResponse generateJwtResponse(UserProfile user) {
         String token = jwtUtil.generateToken(
                 user.getId(),
                 user.getEmail(),
                 user.getRole()
         );
 
-        JwtResponse response = new JwtResponse(
+        return new JwtResponse(
                 token,
                 user.getId(),
                 user.getEmail(),
                 user.getRole()
         );
-
-        return ResponseEntity.ok(response);
     }
 }
