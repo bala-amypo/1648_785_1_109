@@ -38,8 +38,20 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/").permitAll() // public endpoints
-                .anyRequest().authenticated() // all other endpoints need authentication
+                // 1. Whitelist Auth endpoints
+                .requestMatchers("/api/auth/**").permitAll() 
+                
+                // 2. Whitelist Swagger/OpenAPI endpoints
+                .requestMatchers(
+                    "/v3/api-docs/**",
+                    "/v2/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/webjars/**"
+                ).permitAll()
+                
+                // 3. All other endpoints need authentication
+                .anyRequest().authenticated() 
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
