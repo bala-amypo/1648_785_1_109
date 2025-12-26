@@ -14,22 +14,22 @@ public class CreditCardController {
 
     private final CreditCardService cardService;
 
-    @PostMapping("/POST")
+    @PostMapping
     public CreditCardRecord addCard(@RequestBody CreditCardRecord card) {
         return cardService.addCard(card);
     }
 
-    @GetMapping("/GET/{id}")
+    @GetMapping("/{id}")
     public CreditCardRecord getCardById(@PathVariable Long id) {
         return cardService.getCardById(id);
     }
 
-    @GetMapping("/GET/user/{userId}")
+    @GetMapping("/user/{userId}")
     public List<CreditCardRecord> getCardsByUser(@PathVariable Long userId) {
         return cardService.getCardsByUser(userId);
     }
 
-    @GetMapping("/GET")
+    @GetMapping
     public List<CreditCardRecord> getAllCards() {
         return cardService.getAllCards();
     }
