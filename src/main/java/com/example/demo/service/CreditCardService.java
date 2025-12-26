@@ -1,6 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.CreditCardRecord;
+import java.util.List;
+
 public interface CreditCardService {
-    // define service methods
-    int calculateRewardPoints(double amount);
+
+    CreditCardRecord addCard(CreditCardRecord card);
+
+    CreditCardRecord getCardById(Long cardId);
+
+    List<CreditCardRecord> getCardsByUser(Long userId);
+
+    List<CreditCardRecord> getAllCards();
 }

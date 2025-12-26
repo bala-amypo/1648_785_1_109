@@ -2,38 +2,35 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.CreditCardRecord;
 import com.example.demo.service.CreditCardService;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cards")
+@RequestMapping("/api/cards")
+@RequiredArgsConstructor
 public class CreditCardController {
 
     private final CreditCardService cardService;
 
-    public CreditCardController(CreditCardService cardService) {
-        this.cardService = cardService;
-    }
-
     @PostMapping
-    public ResponseEntity<CreditCardRecord> addCard(@RequestBody CreditCardRecord card) {
-        return ResponseEntity.ok(cardService.addCard(card));
+    public CreditCardRecord addCard(@RequestBody CreditCardRecord card) {
+        return cardService.addCard(card);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CreditCardRecord> getCard(@PathVariable Long id) {
-        return ResponseEntity.ok(cardService.getCardById(id));
+    public CreditCardRecord getCardById(@PathVariable Long id) {
+        return cardService.getCardById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CreditCardRecord>> getCardsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(cardService.getCardsByUser(userId));
+    public List<CreditCardRecord> getCardsByUser(@PathVariable Long userId) {
+        return cardService.getCardsByUser(userId);
     }
 
     @GetMapping
-    public ResponseEntity<List<CreditCardRecord>> getAllCards() {
-        return ResponseEntity.ok(cardService.getAllCards());
+    public List<CreditCardRecord> getAllCards() {
+        return cardService.getAllCards();
     }
 }
