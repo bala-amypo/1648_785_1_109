@@ -16,10 +16,12 @@ public class CreditCardRecord {
     private String issuer;
     private String status;
     private Double annualFee;
+    private Double balance; // Added this to fix the compilation error
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+        if (this.balance == null) this.balance = 0.0;
     }
 }
