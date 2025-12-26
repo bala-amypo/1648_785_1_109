@@ -30,25 +30,21 @@ public class AuthController {
         stu.setPassword(encoder.encode(stu.getPassword()));
         return ser.saveExtraStudent(stu);
     }
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        ExtraStudent student = ser.CheckEmail(request.getEmail());
-        
-        if (student == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found");
-        }
-
-        if (!encoder.matches(request.getPassword(), student.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-
-        // MATCHES YOUR STAFF CODE: generateToken(String email, String role)
-        String token = util.generateToken(
-                student.getEmail(),
-                student.getRole()
-        );
-
-        return ResponseEntity.ok(new AuthResponse(token, student.getRole()));
+public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    ExtraStudent student = ser.CheckEmail(request.getEmail());
+    
+    if (student == null || !encoder.matches(request.getPassword(), student.getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
+
+    // FIX: Pass the ID, then Email, then Role
+    String token = util.generateToken(
+            student.getId(), 
+            student.getEmail(),
+            student.getRole()
+    );
+
+    return ResponseEntity.ok(new AuthResponse(token, student.getRole()));
+}
 }
