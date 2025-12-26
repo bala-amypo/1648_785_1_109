@@ -37,15 +37,21 @@ public class UserProfileServiceImpl implements UserProfileService {
         return repository.findAll();
     }
    @Override
-public UserProfile updateUserStatus(Long id, boolean status) {
-    // 1. Fetch the user
-    UserProfile user = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-    
-    // 2. Update the status (assuming the field is 'enabled' or 'active')
-    user.setEnabled(status); 
-    
-    // 3. Save and RETURN the user object
-    return repository.save(user);
-}
+    public UserProfile getUserByEmail(String email) {
+        // This assumes you have findByEmail defined in your UserProfileRepository
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+    }
+
+    @Override
+    public UserProfile updateUserStatus(Long id, boolean status) {
+        UserProfile user = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        
+        // CHECK YOUR ENTITY: If the field is 'active', use 'setActive'. 
+        // If 'status', use 'setStatus'. I will use 'setActive' as a common default:
+        user.setActive(status); 
+        
+        return repository.save(user);
+    }
 }
