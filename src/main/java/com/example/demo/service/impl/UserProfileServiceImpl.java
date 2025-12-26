@@ -1,32 +1,29 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.UserProfile;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.service.UserProfileService;
+import com.example.demo.exception.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserProfileServiceImpl(UserProfileRepository repository) {
+    // Constructor updated to include PasswordEncoder (Fixes Test Error)
+    public UserProfileServiceImpl(UserProfileRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserProfile createUser(UserProfile userProfile) {
-        userProfile.setActive(true);
-        return repository.save(userProfile);
-    }
-
-    @Override
-    public UserProfile getUserByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserProfile createUser(UserProfile user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
     }
 
     @Override
@@ -38,12 +35,5 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public List<UserProfile> getAllUsers() {
         return repository.findAll();
-    }
-
-    @Override
-    public UserProfile updateUserStatus(Long id, boolean active) {
-        UserProfile user = getUserById(id);
-        user.setActive(active);
-        return repository.save(user);
     }
 }
