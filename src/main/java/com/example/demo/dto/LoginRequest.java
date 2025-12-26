@@ -18,7 +18,7 @@ public class LoginController {
 
         // 2. Dummy validation logic 
         // (In a real app, you would use a Service to check your Database)
-        if ("admin@example.com".equals(email) && "password123".equals(password)) {
+        if ("Naveen@gmail.com".equals(email) && "Naveen@cr7".equals(password)) {
             return ResponseEntity.ok("Login successful!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
