@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PurchaseIntentRepository extends JpaRepository<PurchaseIntent, Long> {
+public interface PurchaseIntentRecordRepository extends JpaRepository<PurchaseIntent, Long> {
     List<PurchaseIntent> findByUserId(Long userId);
 }

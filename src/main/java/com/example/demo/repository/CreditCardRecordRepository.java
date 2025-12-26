@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CreditCardRepository extends JpaRepository<CreditCardRecord, Long> {
+public interface CreditCardRecordRepository extends JpaRepository<CreditCardRecord, Long> {
     List<CreditCardRecord> findByUserId(Long userId);
 }
