@@ -6,12 +6,18 @@ import jakarta.persistence.*;
 public class ExtraStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Ensure this is Long (capital L)
+
     private String email;
     private String password;
     private String role;
 
-    // Getters and Setters
+    // The missing method:
+    public Long getId() {
+        return id;
+    }
+
+    // Standard getters and setters for other fields
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }

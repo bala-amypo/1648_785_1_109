@@ -43,14 +43,13 @@ public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
-    // FIX IS HERE: Added student.getId() as the first argument
+    // Now student.getId() will work!
     String token = util.generateToken(
             student.getId(), 
             student.getEmail(),
             student.getRole()
     );
 
-    // Ensure AuthResponse also takes ID if your constructor requires it
     return ResponseEntity.ok(new AuthResponse(token, student.getRole()));
 }
 }
