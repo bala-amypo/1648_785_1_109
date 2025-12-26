@@ -1,35 +1,30 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.UserProfile;
-import com.example.demo.repository.UserProfileRepository;
+import com.example.demo.entity.ExtraStudent;
+import com.example.demo.repository.ExtraStudentRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
-import java.util.Collections;
-
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserProfileRepository userRepository;
-
-    public CustomUserDetailsService(UserProfileRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private ExtraStudentRepo repo;
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        ExtraStudent student = repo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        UserProfile user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
-
-        return User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(Collections.emptyList())
-                .accountLocked(Boolean.FALSE.equals(user.getActive()))
-                .build();
+        return new org.springframework.security.core.userdetails.User(
+                student.getEmail(), 
+                student.getPassword(), 
+                new ArrayList<>() // You can add roles/authorities here
+        );
     }
 }

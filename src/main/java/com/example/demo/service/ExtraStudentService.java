@@ -1,23 +1,23 @@
-package com.example.OneToMany.service.impl;
+package com.example.demo.service;
 
-import java.util.Optional;
-
+import com.example.demo.entity.ExtraStudent;
+import com.example.demo.repository.ExtraStudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
-import com.example.OneToMany.entity.ExtraStudent;
-import com.example.OneToMany.repository.ExtraStudentRepo;
-import com.example.OneToMany.service.ExtraStudentService;
-
-@Service
+@Service // This fixes the 'UnsatisfiedDependencyException'
 public class ExtraStudentServiceImpl implements ExtraStudentService {
 
     @Autowired
-    ExtraStudentRepo repo;
+    private ExtraStudentRepo repo;
 
     @Override
-    public ExtraStudent saveExtraStudent(ExtraStudent stu) {
-        return repo.save(stu);
+    public ExtraStudent saveExtraStudent(ExtraStudent student) {
+        return repo.save(student);
+    }
+
+    @Override
+    public ExtraStudent CheckEmail(String email) {
+        return repo.findByEmail(email).orElse(null);
     }
 }
