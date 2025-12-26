@@ -24,12 +24,12 @@ public class CreditCardController {
         return cardService.getCardById(id);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/GET/user/{userId}")
     public List<CreditCardRecord> getCardsByUser(@PathVariable Long userId) {
         return cardService.getCardsByUser(userId);
     }
 
-    @GetMapping
+    @GetMapping("/GET")
     public List<CreditCardRecord> getAllCards() {
         return cardService.getAllCards();
     }
