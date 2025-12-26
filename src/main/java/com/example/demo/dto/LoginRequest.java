@@ -1,36 +1,25 @@
 package com.example.demo.dto;
 
-/**
- * DTO to capture login credentials from the UI.
- */
 public class LoginRequest {
 
-    private String username;
+    private String email;
     private String password;
 
-    // Default constructor (Required by Jackson for JSON parsing)
     public LoginRequest() {
     }
 
-    // Constructor for easy testing
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public String getEmail() {
+        return email;
     }
-
-    // Getters and Setters
-    public String getUsername() {
-        return username;
+    
+    public void setEmail(String email) {
+        this.email = email;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
         this.password = password;
     }
