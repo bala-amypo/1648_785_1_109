@@ -48,13 +48,15 @@ public class AuthController {
         String token = jwtUtil.generateToken(
                 saved.getId(),
                 saved.getEmail(),
-                saved.getRole());
+                saved.getRole()
+        );
 
         JwtResponse response = new JwtResponse(
                 token,
                 saved.getId(),
                 saved.getEmail(),
-                saved.getRole());
+                saved.getRole()
+        );
 
         return ResponseEntity.ok(response);
     }
@@ -67,7 +69,9 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
-                        request.getPassword()));
+                        request.getPassword()
+                )
+        );
 
         UserProfile user = userRepo.findByEmail(request.getEmail())
                 .orElseThrow();
@@ -75,13 +79,15 @@ public class AuthController {
         String token = jwtUtil.generateToken(
                 user.getId(),
                 user.getEmail(),
-                user.getRole());
+                user.getRole()
+        );
 
         JwtResponse response = new JwtResponse(
                 token,
                 user.getId(),
                 user.getEmail(),
-                user.getRole());
+                user.getRole()
+        );
 
         return ResponseEntity.ok(response);
     }
