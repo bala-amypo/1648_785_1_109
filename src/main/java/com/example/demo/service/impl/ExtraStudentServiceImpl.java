@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.ExtraStudent;
-import com.example.demo.repository.ExtraStudentRepo;
+import com.example.demo.repository.ExtraStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ExtraStudentServiceImpl implements ExtraStudentService {
 
     @Autowired
-    private ExtraStudentRepo repo;
+    private ExtraStudentRepository repo;
 
     @Override
     public ExtraStudent saveExtraStudent(ExtraStudent student) {
