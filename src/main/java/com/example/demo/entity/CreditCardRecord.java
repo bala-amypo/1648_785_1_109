@@ -1,30 +1,30 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data // generates getters, setters, toString, equals, hashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreditCardRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String cardName;
-    private String issuer;
-    private String status;
-    private double annualFee;
+    private Long userId;
 
-    public Long getId() { return id; }
+    private String cardNumber;
 
-    public String getCardName() { return cardName; }
-    public void setCardName(String cardName) { this.cardName = cardName; }
+    private String cardHolderName;
 
-    public String getIssuer() { return issuer; }
-    public void setIssuer(String issuer) { this.issuer = issuer; }
+    private String cardType;
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public double getAnnualFee() { return annualFee; }
-    public void setAnnualFee(double annualFee) { this.annualFee = annualFee; }
+    private Double balance;
 }
