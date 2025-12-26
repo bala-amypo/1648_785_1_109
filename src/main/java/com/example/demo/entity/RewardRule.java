@@ -6,13 +6,31 @@ import jakarta.persistence.*;
 public class RewardRule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long cardId;
     private String category;
-    private Double multiplier;
-    private Boolean active = true;
+    private double multiplier;
+    private boolean active;
 
-    // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public Long getCardId() {
+        return cardId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getMultiplier() {
+        return multiplier;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
 }

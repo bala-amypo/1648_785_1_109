@@ -6,14 +6,19 @@ import jakarta.persistence.*;
 public class RecommendationRecord {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
     private Long purchaseIntentId;
     private Long recommendedCardId;
-    private Double expectedRewardValue;
+    private double rewardPoints;
     private String calculationDetailsJson;
 
-    // getters and setters
+    public void setPurchaseIntentId(Long purchaseIntentId) {
+        this.purchaseIntentId = purchaseIntentId;
+    }
+
+    public void setCalculationDetailsJson(String calculationDetailsJson) {
+        this.calculationDetailsJson = calculationDetailsJson;
+    }
 }

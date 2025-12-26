@@ -6,13 +6,26 @@ import jakarta.persistence.*;
 public class PurchaseIntentRecord {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
     private String category;
-    private String merchant;
-    private Double amount;
+    private double amount;
 
-    // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
 }

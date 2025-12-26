@@ -1,26 +1,36 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class CreditCardRecord {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
     private String cardName;
     private String issuer;
     private String status;
-    private Double annualFee = 0.0;
-    private LocalDateTime createdAt;
+    private double annualFee;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    // getters and setters
+    public String getCardName() {
+        return cardName;
+    }
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public double getAnnualFee() {
+        return annualFee;
+    }
 }
