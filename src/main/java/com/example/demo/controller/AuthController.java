@@ -1,25 +1,31 @@
-package com.example.demo.config;
+package com.example.demo.controller;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 
-@Configuration
-public class SwaggerConfig {
+@Tag(name = "Auth")
+public class AuthController {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("Student API").version("1.0").description("API Documentation with JWT"))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(new Components()
-                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")));
+    private final UserService service;
+
+    public AuthController(UserService service) {
+        this.service = service;
+    }
+
+    public ResponseEntity<?> register(RegisterRequest request) {
+        try {
+            return ResponseEntity.ok(service.register(request));
+        } catch (Exception e) {
+            // 🔥 REQUIRED: return 400 when email exists
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    public ResponseEntity<AuthResponse> login(AuthRequest request) {
+        return ResponseEntity.ok(service.login(request));
     }
 }
