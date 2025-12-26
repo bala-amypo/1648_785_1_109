@@ -14,4 +14,4 @@ public class PurchaseIntentRecord {
     public Long getUserId() { return userId; }
     public String getCategory() { return category; }
     public double getAmount() { return amount; }
-}
+}  
