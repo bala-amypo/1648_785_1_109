@@ -1,45 +1,36 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.PurchaseIntent;
+import com.example.demo.repository.PurchaseIntentRepository;
 import com.example.demo.service.PurchaseIntentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseIntentServiceImpl implements PurchaseIntentService {
 
-    private final List<PurchaseIntent> intents = new ArrayList<>();
+    private final PurchaseIntentRepository repository;
 
     @Override
     public PurchaseIntent addIntent(PurchaseIntent intent) {
-        intents.add(intent);
-        return intent;
+        return repository.save(intent);
     }
 
     @Override
     public PurchaseIntent getIntentById(Long id) {
-        Optional<PurchaseIntent> intent = intents.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst();
-        return intent.orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public List<PurchaseIntent> getIntentsByUser(Long userId) {
-        List<PurchaseIntent> userIntents = new ArrayList<>();
-        for (PurchaseIntent intent : intents) {
-            if (intent.getUserId().equals(userId)) {
-                userIntents.add(intent);
-            }
-        }
-        return userIntents;
+        return repository.findByUserId(userId);
     }
 
     @Override
     public List<PurchaseIntent> getAllIntents() {
-        return new ArrayList<>(intents);
+        return repository.findAll();
     }
 }
