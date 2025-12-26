@@ -16,10 +16,19 @@ public class RecommendationEngineServiceImpl implements RecommendationEngineServ
     private final CreditCardRepository creditCardRepository;
 
     @Override
-    public CreditCardRecord recommendBestCard(Long userId) {
-        List<CreditCardRecord> cards = creditCardRepository.findByUserId(userId);
-        return cards.stream()
-                .max(Comparator.comparingDouble(CreditCardRecord::getBalance)) // example: max balance
+    public CreditCardRecord generateRecommendation(Long userId) {
+        return creditCardRepository.findByUserId(userId).stream()
+                .max(Comparator.comparingDouble(CreditCardRecord::getBalance))
                 .orElse(null);
+    }
+
+    @Override
+    public List<CreditCardRecord> getRecommendationsByUser(Long userId) {
+        return creditCardRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<CreditCardRecord> getAllRecommendations() {
+        return creditCardRepository.findAll();
     }
 }
