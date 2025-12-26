@@ -13,26 +13,27 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Auth")
 public class AuthController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    public AuthController(UserService service) {
-        this.service = service;
+    // Constructor Injection ensures the UserService is properly linked
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            return ResponseEntity.ok(service.register(request));
+            return ResponseEntity.ok(userService.register(request));
         } catch (Exception e) {
-            // Returns 400 if registration fails (e.g. email already exists)
+            // Returns a 400 Bad Request if registration fails
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
-        // If credentials are wrong, service.login will throw AuthenticationException
-        // which results in the "Bad credentials" message you are seeing.
-        return ResponseEntity.ok(service.login(request));
+        // This will call the login logic and return the JWT details
+        // If credentials are wrong, this throws the "Bad credentials" exception
+        return ResponseEntity.ok(userService.login(request));
     }
 }
