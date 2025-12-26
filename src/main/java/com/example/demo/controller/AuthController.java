@@ -13,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/AuthController")
 public class AuthController {
 
     private final UserProfileService userService;
@@ -31,8 +31,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // ================= REGISTER =================
-    @PostMapping("/register")
+    @PostMapping("/POST/register")
     public ResponseEntity<JwtResponse> register(
             @RequestBody RegisterRequest request) {
 
@@ -61,8 +60,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    // ================= LOGIN =================
-    @PostMapping("/login")
+    @PostMapping("/POST/login")
     public ResponseEntity<JwtResponse> login(
             @RequestBody LoginRequest request) {
 

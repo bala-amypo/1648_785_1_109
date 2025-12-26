@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("/CreditCardController")
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
 public class CreditCardController {
 
     private final CreditCardService cardService;
 
-    @PostMapping
+    @PostMapping("/POST")
     public CreditCardRecord addCard(@RequestBody CreditCardRecord card) {
         return cardService.addCard(card);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/GET/{id}")
     public CreditCardRecord getCardById(@PathVariable Long id) {
         return cardService.getCardById(id);
     }

@@ -18,30 +18,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    // Expose AuthenticationManager as a bean
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
-    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Security filter chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // 1. Whitelist Auth endpoints
                 .requestMatchers("/api/auth/**").permitAll() 
                 
-                // 2. Whitelist Swagger/OpenAPI endpoints
                 .requestMatchers(
                     "/v3/api-docs/**",
                     "/v2/api-docs/**",
@@ -50,7 +44,6 @@ public class SecurityConfig {
                     "/webjars/**"
                 ).permitAll()
                 
-                // 3. All other endpoints need authentication
                 .anyRequest().authenticated() 
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
