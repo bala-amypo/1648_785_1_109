@@ -1,36 +1,39 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.PurchaseIntent;
+import com.example.demo.entity.PurchaseIntentRecord;
 import com.example.demo.repository.PurchaseIntentRecordRepository;
 import com.example.demo.service.PurchaseIntentService;
-import lombok.RequiredArgsConstructor;
+import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PurchaseIntentServiceImpl implements PurchaseIntentService {
 
     private final PurchaseIntentRecordRepository repository;
 
+    public PurchaseIntentServiceImpl(PurchaseIntentRecordRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
-    public PurchaseIntent addIntent(PurchaseIntent intent) {
+    public PurchaseIntentRecord createIntent(PurchaseIntentRecord intent) {
         return repository.save(intent);
     }
 
     @Override
-    public PurchaseIntent getIntentById(Long id) {
-        return repository.findById(id).orElse(null);
+    public PurchaseIntentRecord getIntentById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Intent not found"));
     }
 
     @Override
-    public List<PurchaseIntent> getIntentsByUser(Long userId) {
-        return repository.findByUserId(userId);
-    }
-
-    @Override
-    public List<PurchaseIntent> getAllIntents() {
+    public List<PurchaseIntentRecord> getAllIntents() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<PurchaseIntentRecord> getIntentsByUser(Long userId) {
+        return repository.findByUserId(userId);
     }
 }
