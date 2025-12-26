@@ -4,17 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Datapackage com.example.demo.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 public class CreditCardRecord {
@@ -29,7 +18,7 @@ public class CreditCardRecord {
     private String cardType;
     private Double balance;
 
-    // No-args constructor
+    // No-args constructor (required by JPA)
     public CreditCardRecord() {
     }
 
@@ -43,49 +32,50 @@ public class CreditCardRecord {
         this.balance = balance;
     }
 
-    // Getters and Setters
+    // Getters
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public String getCardNumber() {
         return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
     }
 
     public String getCardHolderName() {
         return cardHolderName;
     }
 
-    public void setCardHolderName(String cardHolderName) {
-        this.cardHolderName = cardHolderName;
-    }
-
     public String getCardType() {
         return cardType;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
     public Double getBalance() {
         return balance;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
     }
 
     public void setBalance(Double balance) {
@@ -104,23 +94,4 @@ public class CreditCardRecord {
                 ", balance=" + balance +
                 '}';
     }
-}
-
-@NoArgsConstructor
-@AllArgsConstructor
-public class CreditCardRecord {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long userId;
-
-    private String cardNumber;
-
-    private String cardHolderName;
-
-    private String cardType;
-
-    private Double balance;
 }
