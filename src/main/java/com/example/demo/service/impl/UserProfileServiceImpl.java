@@ -36,12 +36,16 @@ public class UserProfileServiceImpl implements UserProfileService {
     public List<UserProfile> getAllUsers() {
         return repository.findAll();
     }
-    @Override
-    public void updateUserStatus(Long id, boolean status) {
-        UserProfile user = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        
-        user.setActive(status); // Assuming your entity has an 'active' or 'status' field
-        repository.save(user);
-    }
+   @Override
+public UserProfile updateUserStatus(Long id, boolean status) {
+    // 1. Fetch the user
+    UserProfile user = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    
+    // 2. Update the status (assuming the field is 'enabled' or 'active')
+    user.setEnabled(status); 
+    
+    // 3. Save and RETURN the user object
+    return repository.save(user);
+}
 }
