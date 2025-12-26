@@ -1,27 +1,35 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.ExtraStudent;
-import com.example.demo.repository.ExtraStudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.entity.UserProfile;
+import com.example.demo.repository.UserProfileRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
-@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private ExtraStudentRepository repo;
+    private final UserProfileRepository userRepository;
+
+    public CustomUserDetailsService(UserProfileRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        ExtraStudent student = repo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
 
-        return new User(student.getEmail(), student.getPassword(), new ArrayList<>());
+        UserProfile user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found"));
+
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .authorities(Collections.emptyList())
+                .accountLocked(Boolean.FALSE.equals(user.getActive()))
+                .build();
     }
 }
