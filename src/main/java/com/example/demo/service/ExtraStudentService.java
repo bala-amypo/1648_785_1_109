@@ -1,8 +1,23 @@
-package com.example.demo.service;
+package com.example.OneToMany.service.impl;
 
-import com.example.demo.entity.ExtraStudent;
+import java.util.Optional;
 
-public interface ExtraStudentService {
-    ExtraStudent saveExtraStudent(ExtraStudent student);
-    ExtraStudent CheckEmail(String email);
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Service;
+
+import com.example.OneToMany.entity.ExtraStudent;
+import com.example.OneToMany.repository.ExtraStudentRepo;
+import com.example.OneToMany.service.ExtraStudentService;
+
+@Service
+public class ExtraStudentServiceImpl implements ExtraStudentService {
+
+    @Autowired
+    ExtraStudentRepo repo;
+
+    @Override
+    public ExtraStudent saveExtraStudent(ExtraStudent stu) {
+        return repo.save(stu);
+    }
 }
