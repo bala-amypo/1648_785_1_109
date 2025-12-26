@@ -1,51 +1,92 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.ExtraStudent;
-import com.example.demo.repository.ExtraStudentRepository;
+import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.UserProfile;
+import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.UserProfileService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*") 
 public class AuthController {
 
-    @Autowired private AuthenticationManager authManager;
-    @Autowired private ExtraStudentRepository repo;
-    @Autowired private PasswordEncoder encoder;
-    @Autowired private JwtUtil jwtUtil;
+    private final UserProfileService userService;
+    private final UserProfileRepository userRepo;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    @PostMapping("/add")
-    public String register(@RequestBody ExtraStudent student) {
-        student.setPassword(encoder.encode(student.getPassword()));
-        repo.save(student);
-        return "Student Registered Successfully";
+    public AuthController(UserProfileService userService,
+                          UserProfileRepository userRepo,
+                          AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.userRepo = userRepo;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<JwtResponse> register(
+            @RequestBody RegisterRequest request) {
+
+        UserProfile user = new UserProfile();
+        user.setUserId(request.getUserId());
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+
+        UserProfile saved = userService.createUser(user);
+
+        String token = jwtUtil.generateToken(
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole()
+        );
+
+        JwtResponse response = new JwtResponse(
+                token,
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole()
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-    // 1. Find the student in the database
-    ExtraStudent student = repo.findByEmail(request.getEmail())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<JwtResponse> login(
+            @RequestBody LoginRequest request) {
 
-    // 2. Authenticate the user
-    authManager.authenticate(new UsernamePasswordAuthenticationToken(
-            request.getEmail(), request.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
-    // 3. FIX: Pass all 3 required arguments to generateToken
-    // Format: generateToken(Long id, String email, String role)
-    String token = jwtUtil.generateToken(
-            student.getId(), 
-            student.getEmail(), 
-            student.getRole()
-    );
+        UserProfile user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow();
 
-    // 4. Return the response
-    return ResponseEntity.ok(new AuthResponse(token, student.getRole()));
-}
+        String token = jwtUtil.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        JwtResponse response = new JwtResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }
