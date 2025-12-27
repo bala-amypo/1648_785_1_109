@@ -1,9 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.*;
+import com.example.demo.entity.RecommendationRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.*;
-public interface RecommendationRecordRepository extends JpaRepository<RecommendationRecord, Long> {
-    List<RecommendationRecord> findByUserId(Long userId);
-}
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
+@Repository
+public interface RecommendationRecordRepository extends JpaRepository<RecommendationRecord, Long> {
+    List<RecommendationRecord> findByUserId(Long userId); // Required for Test 48
+}
