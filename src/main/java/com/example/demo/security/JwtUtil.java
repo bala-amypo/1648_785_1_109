@@ -17,8 +17,25 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Use a secure key (at least 32 characters)
     private static final String SECRET_KEY = "357638792F423F4528482B4D6251655468576D5A7134743777217A25432A462D";
+
+    // --- ADD THIS METHOD TO FIX THE ERROR ---
+    public String generateToken(Long id, String email, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", id);
+        claims.put("role", role);
+        return createToken(claims, email);
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
