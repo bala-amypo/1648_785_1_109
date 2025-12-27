@@ -1,10 +1,28 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.RewardRule;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.*;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
-    boolean existsByEmail(String email);
-    boolean existsByUserId(String userId);
-    Optional<UserProfile> findByEmail(String email);
+import java.util.List;
+
+@Repository
+public interface RewardRuleRepository extends JpaRepository<RewardRule, Long> {
+
+    @Query("""
+           SELECT r
+           FROM RewardRule r
+           WHERE r.cardId = :cardId
+             AND r.category = :category
+             AND r.active = true
+           """)
+    List<RewardRule> findActiveRulesForCardCategory(Long cardId, String category);
+
+    @Query("""
+           SELECT r
+           FROM RewardRule r
+           WHERE r.active = true
+           """)
+    List<RewardRule> findByActiveTrue();
 }
