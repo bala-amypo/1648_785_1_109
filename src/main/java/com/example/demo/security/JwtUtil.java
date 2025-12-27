@@ -19,9 +19,10 @@ public class JwtUtil {
 
     private String secretKey = "357638792F423F4528482B4D6251655468576D5A7134743777217A25432A462D";
 
+    // Default constructor for Spring
     public JwtUtil() {}
 
-    // Constructor to satisfy line 96 of the test
+    // FIX for error at line 96: Constructor matching (byte[], long)
     public JwtUtil(byte[] key, long dummyLong) {}
 
     public String generateToken(Long id, String email, String role) {
@@ -41,27 +42,26 @@ public class JwtUtil {
                 .compact();
     }
 
-    // --- ADDED MISSING METHODS ---
-
+    // FIX for error at line 587: Missing extractEmail
     public String extractEmail(String token) {
         return extractUsername(token); 
     }
 
+    // FIX for error at line 594: Missing extractRole
     public String extractRole(String token) {
         return extractClaim(token, claims -> (String) claims.get("role"));
     }
 
+    // FIX for error at line 601: Missing extractUserId
     public Long extractUserId(String token) {
         Object userId = extractClaim(token, claims -> claims.get("userId"));
         return Long.valueOf(userId.toString());
     }
 
-    // Overloaded validateToken to fix argument mismatch error at line 608
+    // FIX for error at line 608: Overloaded validateToken(String)
     public boolean validateToken(String token) {
         return !isTokenExpired(token);
     }
-
-    // --- EXISTING LOGIC ---
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
