@@ -1,10 +1,11 @@
 package com.example.demo.config;
 
-import com.example.demo.security.JwtAuthenticationFilter;
 import com.example.demo.repository.UserProfileRepository;
+import com.example.demo.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +28,8 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserProfileRepository userRepository;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserProfileRepository userRepository) {
+    // We use @Lazy here to break the circular dependency loop
+    public SecurityConfig(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter, UserProfileRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userRepository = userRepository;
     }
@@ -39,29 +41,34 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((req, res, authEx) -> {
-                    // This returns 401 only if a PROTECTED resource is accessed without a token
                     res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized Access");
                 })
             )
             .authorizeHttpRequests(auth -> auth
-                // 🔓 Public paths for the Credit Card project
+                // 🔓 Public Endpoints
                 .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
                 .requestMatchers("/api/users/**").permitAll() 
                 
-                // 🔒 Private paths
+                // 🔒 Protected Endpoints (Credit Card operations)
                 .anyRequest().authenticated()
             );
 
+        // Add the JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    // Bean to load user from database via UserProfileRepository
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
-                .map(user -> new User(user.getEmail(), user.getPassword(), new ArrayList<>()))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+                .map(user -> new User(
+                        user.getEmail(), 
+                        user.getPassword(), 
+                        new ArrayList<>() // Add roles here if needed
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
     @Bean
