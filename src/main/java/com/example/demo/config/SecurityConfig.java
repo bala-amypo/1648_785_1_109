@@ -27,17 +27,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserProfileRepository userRepository;
 
-    // We inject the Repository directly instead of a custom service file
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserProfileRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userRepository = userRepository;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return email -> userRepository.findByEmail(email)
-                .map(user -> new User(user.getEmail(), user.getPassword(), new ArrayList<>()))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     }
 
     @Bean
@@ -47,18 +39,29 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((req, res, authEx) -> {
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    // This returns 401 only if a PROTECTED resource is accessed without a token
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized Access");
                 })
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/api/users/**").authenticated()
+                // 🔓 Public paths for the Credit Card project
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
+                .requestMatchers("/api/users/**").permitAll() 
+                
+                // 🔒 Private paths
                 .anyRequest().authenticated()
             );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return email -> userRepository.findByEmail(email)
+                .map(user -> new User(user.getEmail(), user.getPassword(), new ArrayList<>()))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     }
 
     @Bean
