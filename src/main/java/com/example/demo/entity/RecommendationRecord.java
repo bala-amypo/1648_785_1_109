@@ -1,33 +1,44 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "recommendations")
 public class RecommendationRecord {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Id
-    @GeneratedValue
-    private Long id;
+  private Long userId;
 
-    private Long userId;
-    private Long purchaseIntentId;
-    private Long recommendedCardId;
-    private Double expectedRewardValue;
-    private String calculationDetailsJson;
+  private Long purchaseIntentId;
 
-    // getters & setters
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+  private Long recommendedCardId;
 
-    public Long getPurchaseIntentId() { return purchaseIntentId; }
-    public void setPurchaseIntentId(Long purchaseIntentId) { this.purchaseIntentId = purchaseIntentId; }
+  private Double expectedRewardValue;
 
-    public Long getRecommendedCardId() { return recommendedCardId; }
-    public void setRecommendedCardId(Long recommendedCardId) { this.recommendedCardId = recommendedCardId; }
+  private String calculationDetailsJson;
 
-    public Double getExpectedRewardValue() { return expectedRewardValue; }
-    public void setExpectedRewardValue(Double expectedRewardValue) { this.expectedRewardValue = expectedRewardValue; }
+  private LocalDateTime recommendedAt;
 
-    public String getCalculationDetailsJson() { return calculationDetailsJson; }
-    public void setCalculationDetailsJson(String calculationDetailsJson) { this.calculationDetailsJson = calculationDetailsJson; }
+  @PrePersist
+  public void prePersist() {
+    if (this.recommendedAt == null) this.recommendedAt = LocalDateTime.now();
+  }
+
+  // getters and setters
+  public Long getId() { return id; }
+  public void setId(Long id) { this.id = id; }
+  public Long getUserId() { return userId; }
+  public void setUserId(Long userId) { this.userId = userId; }
+  public Long getPurchaseIntentId() { return purchaseIntentId; }
+  public void setPurchaseIntentId(Long purchaseIntentId) { this.purchaseIntentId = purchaseIntentId; }
+  public Long getRecommendedCardId() { return recommendedCardId; }
+  public void setRecommendedCardId(Long recommendedCardId) { this.recommendedCardId = recommendedCardId; }
+  public Double getExpectedRewardValue() { return expectedRewardValue; }
+  public void setExpectedRewardValue(Double expectedRewardValue) { this.expectedRewardValue = expectedRewardValue; }
+  public String getCalculationDetailsJson() { return calculationDetailsJson; }
+  public void setCalculationDetailsJson(String calculationDetailsJson) { this.calculationDetailsJson = calculationDetailsJson; }
+  public LocalDateTime getRecommendedAt() { return recommendedAt; }
+  public void setRecommendedAt(LocalDateTime recommendedAt) { this.recommendedAt = recommendedAt; }
 }
