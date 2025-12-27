@@ -2,35 +2,44 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.CreditCardRecord;
 import com.example.demo.service.CreditCardService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/cards")
-@RequiredArgsConstructor
 public class CreditCardController {
 
-    private final CreditCardService cardService;
+    private final CreditCardService service;
 
-    @PostMapping
-    public CreditCardRecord addCard(@RequestBody CreditCardRecord card) {
-        return cardService.addCard(card);
+    public CreditCardController(CreditCardService service) {
+        this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public CreditCardRecord getCardById(@PathVariable Long id) {
-        return cardService.getCardById(id);
+    @PostMapping
+    public ResponseEntity<CreditCardRecord> add(@RequestBody CreditCardRecord card) {
+        return ResponseEntity.ok(service.addCard(card));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CreditCardRecord> update(@PathVariable Long id,
+                                                   @RequestBody CreditCardRecord updated) {
+        return ResponseEntity.ok(service.updateCard(id, updated));
     }
 
     @GetMapping("/user/{userId}")
-    public List<CreditCardRecord> getCardsByUser(@PathVariable Long userId) {
-        return cardService.getCardsByUser(userId);
+    public ResponseEntity<List<CreditCardRecord>> byUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.getCardsByUser(userId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CreditCardRecord> get(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getCardById(id));
     }
 
     @GetMapping
-    public List<CreditCardRecord> getAllCards() {
-        return cardService.getAllCards();
+    public ResponseEntity<List<CreditCardRecord>> all() {
+        return ResponseEntity.ok(service.getAllCards());
     }
 }

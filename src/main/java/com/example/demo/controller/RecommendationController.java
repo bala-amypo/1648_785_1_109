@@ -4,31 +4,35 @@ import com.example.demo.entity.RecommendationRecord;
 import com.example.demo.service.RecommendationEngineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommendations")
 public class RecommendationController {
 
-    private final RecommendationEngineService recommendationService;
+  private final RecommendationEngineService service;
 
-    public RecommendationController(RecommendationEngineService recommendationService) {
-        this.recommendationService = recommendationService;
-    }
+  public RecommendationController(RecommendationEngineService service) {
+    this.service = service;
+  }
 
-    @PostMapping("/generate/{intentId}")
-    public ResponseEntity<RecommendationRecord> generate(@PathVariable Long intentId) {
-        return ResponseEntity.ok(recommendationService.generateRecommendation(intentId));
-    }
+  @PostMapping("/generate/{intentId}")
+  public ResponseEntity<RecommendationRecord> generate(@PathVariable Long intentId) {
+    return ResponseEntity.ok(service.generateRecommendation(intentId));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<RecommendationRecord>> getAll() {
-        return ResponseEntity.ok(recommendationService.getAllRecommendations());
-    }
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<List<RecommendationRecord>> byUser(@PathVariable Long userId) {
+    return ResponseEntity.ok(service.getRecommendationsByUser(userId));
+  }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<RecommendationRecord>> getByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(recommendationService.getRecommendationsByUser(userId));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<RecommendationRecord> get(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getRecommendationById(id));
+  }
+
+  @GetMapping
+  public ResponseEntity<List<RecommendationRecord>> all() {
+    return ResponseEntity.ok(service.getAllRecommendations());
+  }
 }
