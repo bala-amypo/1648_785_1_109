@@ -1,10 +1,15 @@
 package com.example.demo.entity;
 
 import lombok.Data;
-import javax.persistence.*;
+// Change javax to jakarta here:
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 
 @Entity
-@Data // This generates getId, setId, setUserId, etc.
+@Data
 public class RecommendationRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
