@@ -1,19 +1,19 @@
 package com.example.demo.config;
 
-import com.example.demo.security.JwtAuthenticationEntryPoint;
 import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity; // Added this import
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse; // Added for default error handling
 
 @Configuration
-@EnableWebSecurity // Added this annotation to enable Spring Security
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -24,42 +24,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-
-                // 🔓 Public Auth & Swagger
-                .requestMatchers(
-                    "/auth/**",
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**"
-                ).permitAll()
-
-                // 🔓 User Profiles (Added this to fix your 403 error)
+                // 🔓 Public Auth, Swagger, and User APIs
+                .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
+                
+                // 🔓 Public Products & Warranties
+                .requestMatchers(HttpMethod.GET, "/products/**", "/warranties/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/products/**", "/warranties/register/**").permitAll()
+                
+                // 🔓 Public Logs & Schedules
+                .requestMatchers("/logs/**", "/schedules/**").permitAll()
 
-                // 🔓 Products
-                .requestMatchers(HttpMethod.POST, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/products").permitAll()
-
-                // 🔓 Warranties
-                .requestMatchers(HttpMethod.POST, "/warranties/register/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/warranties/**").permitAll()
-
-                // 🔓 Alert Logs
-                .requestMatchers(HttpMethod.POST, "/logs/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/logs/**").permitAll()
-
-                // 🔓 Alert Schedules
-                .requestMatchers(HttpMethod.POST, "/schedules/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/schedules/**").permitAll()
-
-                // 🔒 Everything else requires JWT
+                // 🔒 Everything else requires authentication
                 .anyRequest().authenticated()
             )
-            .exceptionHandling(ex -> 
-                ex.authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+            // Fix: Replaced the missing JwtAuthenticationEntryPoint with a simple lambda
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                })
             )
             .addFilterBefore(
                 jwtAuthenticationFilter,
