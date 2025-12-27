@@ -22,13 +22,13 @@ public class RecommendationController {
         return ResponseEntity.ok(recommendationService.generateRecommendation(intentId));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<RecommendationRecord>> getByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(recommendationService.getRecommendationsByUser(userId));
-    }
-
     @GetMapping
     public ResponseEntity<List<RecommendationRecord>> getAll() {
         return ResponseEntity.ok(recommendationService.getAllRecommendations());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<RecommendationRecord>> getByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(recommendationService.getRecommendationsByUser(userId));
     }
 }
