@@ -1,44 +1,36 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.UserProfile;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
+    private final UserProfileRepository repo;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    private UserProfileRepository userRepository;
+    public UserProfileServiceImpl(UserProfileRepository repo, PasswordEncoder encoder) {
+        this.repo = repo;
+        this.encoder = encoder;
+    }
 
     @Override
-    public List<UserProfile> getAllUsers() {
-        return userRepository.findAll();
+    public UserProfile createUser(UserProfile user) {
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new BadRequestException("Email exists");
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user);
     }
 
     @Override
     public UserProfile getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
-    public UserProfile createUser(UserProfile profile) {
-        return userRepository.save(profile);
-    }
-
-    @Override
-    public void updateUserStatus(Long id, boolean active) {
-        userRepository.findById(id).ifPresent(user -> {
-            user.setActive(active);
-            userRepository.save(user);
-        });
-    }
-
-    @Override
-    public void registerUser(RegisterRequest request) {
-        // Implementation logic for registration
-    }
+    public List<UserProfile> getAllUsers() { return repo.findAll(); }
 }
