@@ -21,7 +21,7 @@ public class JwtUtil {
 
     public JwtUtil() {}
 
-    // Constructor to satisfy specific test instantiation if needed
+    // Constructor to satisfy the test at line 96
     public JwtUtil(byte[] key, long dummyLong) {}
 
     public String generateToken(Long id, String email, String role) {
@@ -41,10 +41,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    // --- ADDED MISSING METHODS FOR TESTS ---
+    // --- HELPER METHODS EXPECTED BY YOUR TEST ---
 
     public String extractEmail(String token) {
-        return extractUsername(token); // Usually email is stored as the Subject
+        return extractUsername(token); 
     }
 
     public String extractRole(String token) {
@@ -60,7 +60,7 @@ public class JwtUtil {
         return !isTokenExpired(token);
     }
 
-    // --- EXISTING METHODS ---
+    // --- CORE LOGIC ---
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
