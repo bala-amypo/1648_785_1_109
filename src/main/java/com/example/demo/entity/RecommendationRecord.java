@@ -1,11 +1,10 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
 @Entity
-@Data
+@Data // This generates getId, setId, setUserId, etc.
 public class RecommendationRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,16 +13,8 @@ public class RecommendationRecord {
     private Long userId;
     private Long purchaseIntentId;
     private Long recommendedCardId;
-    
-    private Double expectedRewardValue;
+    private double expectedRewardValue;
     
     @Column(columnDefinition = "TEXT")
     private String calculationDetailsJson;
-    
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
 }
