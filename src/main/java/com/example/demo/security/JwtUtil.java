@@ -21,9 +21,8 @@ public class JwtUtil {
 
     public JwtUtil() {}
 
-    public JwtUtil(byte[] key, long dummyLong) {
-        // Test-specific constructor
-    }
+    // Constructor to satisfy Test line 96
+    public JwtUtil(byte[] key, long dummyLong) {}
 
     public String generateToken(Long id, String email, String role) {
         Map<String, Object> claims = new HashMap<>();
@@ -42,8 +41,35 @@ public class JwtUtil {
                 .compact();
     }
 
+    // --- OVERLOADED VALIDATION METHODS ---
+
+    /**
+     * Used by Tests (t54). Returns false if token is malformed.
+     */
+    public boolean validateToken(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * FIX for Compilation Error: Used by JwtAuthenticationFilter.java:[50,24]
+     */
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // --- OTHER REQUIRED METHODS ---
+
     public String extractEmail(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractUsername(token); 
     }
 
     public String extractRole(String token) {
@@ -51,17 +77,8 @@ public class JwtUtil {
     }
 
     public Long extractUserId(String token) {
-        Object id = extractClaim(token, claims -> claims.get("userId"));
-        return Long.valueOf(id.toString());
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            extractAllClaims(token);
-            return !isTokenExpired(token);
-        } catch (Exception e) {
-            return false;
-        }
+        Object userId = extractClaim(token, claims -> claims.get("userId"));
+        return Long.valueOf(userId.toString());
     }
 
     public String extractUsername(String token) {
@@ -82,6 +99,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
+        // This is where the exception happens for invalid tokens
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
