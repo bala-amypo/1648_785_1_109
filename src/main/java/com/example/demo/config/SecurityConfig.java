@@ -35,27 +35,31 @@ public class SecurityConfig {
     }
 
     @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-            // Allow public endpoints
-            .requestMatchers("/auth/register", "/auth/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            // Everything else requires authentication
-            .anyRequest().authenticated()
-        )
-        .exceptionHandling(ex -> ex
-            .authenticationEntryPoint((req, res, exAuth) ->
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((req, res, authEx) -> {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized Access");
+                })
             )
-        );
+            .authorizeHttpRequests(auth -> auth
+                // 🔓 Public Endpoints
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
+                .requestMatchers("/api/users/**").permitAll() 
+                
+                // 🔒 Protected Endpoints (Credit Card operations)
+                .anyRequest().authenticated()
+            );
 
-    // Add JWT filter
-    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // Add the JWT filter
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-}
+        return http.build();
+    }
+
+    // Bean to load user from database via UserProfileRepository
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
