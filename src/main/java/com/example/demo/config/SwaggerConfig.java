@@ -22,7 +22,7 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("API for managing user profiles. Use the /api/auth/login endpoint to get a token."))
                 .servers(List.of(
-                        new Server().url("https://9074.pro604cr.amypo.ai/swagger-ui.index.html").description("Development Server")
+                        new Server().url("https://9074.pro604cr.amypo.ai/swagger-ui/index.html").description("Development Server")
                 ))
                 // This applies security to EVERY endpoint in the UI
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
