@@ -24,15 +24,19 @@ import java.util.List;
 @Service
 @Transactional
 public class UserProfileServiceImpl implements UserProfileService {
+private final UserProfileRepository repository;
+private final PasswordEncoder passwordEncoder;
 
-    private final UserProfileRepository repository;
-    private final PasswordEncoder passwordEncoder;
+public UserProfileServiceImpl(UserProfileRepository repository,
+                              PasswordEncoder passwordEncoder) {
+    this.repository = repository;
+    this.passwordEncoder = passwordEncoder;
+}
 
-    public UserProfileServiceImpl(UserProfileRepository repository,
-                                  PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-    }
+public UserProfile create(UserProfile user) {
+    return repo.save(user);   // ❌ repo DOES NOT EXIST
+}
+
 
     @Override
     public UserProfile createUser(UserProfile p) {
