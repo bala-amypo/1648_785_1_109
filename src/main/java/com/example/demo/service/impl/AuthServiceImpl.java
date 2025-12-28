@@ -1,22 +1,21 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.dto.LoginRequest;
 import com.example.demo.service.AuthService;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.JwtResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
     @Override
-    public Object register(RegisterRequest request) {
+    public JwtResponse register(RegisterRequest request) {
         // implement registration logic
-        return "User registered successfully!";
+        return new JwtResponse();
     }
 
     @Override
-    public Object login(LoginRequest request) {
+    public JwtResponse login(LoginRequest request) {
         // implement login logic
-        return "User logged in successfully!";
+        return new JwtResponse();
     }
 }
