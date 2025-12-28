@@ -18,7 +18,7 @@ public class SwaggerConfig {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info()
-                        .title("User Profile API")
+                        .title("CREDIT CARD REWARD MAXIMIZER")
                         .version("1.0")
                         .description("API for managing user profiles. Use the /api/auth/login endpoint to get a token."))
                 .servers(List.of(
