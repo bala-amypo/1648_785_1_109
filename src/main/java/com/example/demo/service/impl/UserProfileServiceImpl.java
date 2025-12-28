@@ -12,14 +12,28 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserProfileServiceImpl implements UserProfileService {
-    private final UserProfileRepository repo;
-    private final PasswordEncoder encoder;
+// public class UserProfileServiceImpl implements UserProfileService {
+//     private final UserProfileRepository repo;
+//     private final PasswordEncoder encoder;
 
-    public UserProfileServiceImpl(UserProfileRepository repo, PasswordEncoder encoder) {
-        this.repo = repo;
-        this.encoder = encoder;
+//     public UserProfileServiceImpl(UserProfileRepository repo, PasswordEncoder encoder) {
+//         this.repo = repo;
+//         this.encoder = encoder;
+//     }
+
+@Service
+@Transactional
+public class UserProfileServiceImpl implements UserProfileService {
+
+    private final UserProfileRepository repository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserProfileServiceImpl(UserProfileRepository repository,
+                                  PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
+}
 
     @Override
     public UserProfile createUser(UserProfile p) {
