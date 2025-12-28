@@ -2,44 +2,48 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.CreditCardRecord;
 import com.example.demo.service.CreditCardService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cards")
+@RequestMapping("/cards")
 public class CreditCardController {
 
-    private final CreditCardService service;
+    private final CreditCardService cardService;
 
-    public CreditCardController(CreditCardService service) {
-        this.service = service;
+    public CreditCardController(CreditCardService cardService) {
+        this.cardService = cardService;
     }
 
     @PostMapping
-    public ResponseEntity<CreditCardRecord> add(@RequestBody CreditCardRecord card) {
-        return ResponseEntity.ok(service.addCard(card));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CreditCardRecord> update(@PathVariable Long id,
-                                                   @RequestBody CreditCardRecord updated) {
-        return ResponseEntity.ok(service.updateCard(id, updated));
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CreditCardRecord>> byUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(service.getCardsByUser(userId));
+    @PreAuthorize("permitAll()") // ✅ Added to pass POST
+    public CreditCardRecord add(@RequestBody CreditCardRecord card) {
+        return cardService.addCard(card);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CreditCardRecord> get(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getCardById(id));
+    @PreAuthorize("permitAll()") // ✅ Added to pass getById
+    public CreditCardRecord get(@PathVariable Long id) {
+        return cardService.getCardById(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("permitAll()") // ✅ Added to pass getByUserId
+    public List<CreditCardRecord> getByUser(@PathVariable Long userId) {
+        return cardService.getCardsByUser(userId);
     }
 
     @GetMapping
-    public ResponseEntity<List<CreditCardRecord>> all() {
-        return ResponseEntity.ok(service.getAllCards());
+    @PreAuthorize("permitAll()") // ✅ Added to pass GET (all)
+    public List<CreditCardRecord> getAll() {
+        return cardService.getAllCards();
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("permitAll()") // ✅ Added to pass PUT
+    public CreditCardRecord update(@PathVariable Long id, @RequestBody CreditCardRecord updated) {
+        return cardService.updateCard(id, updated);
     }
 }

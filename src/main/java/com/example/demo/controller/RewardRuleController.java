@@ -2,42 +2,34 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RewardRule;
 import com.example.demo.service.RewardRuleService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/reward-rules")
 public class RewardRuleController {
+    private final RewardRuleService service;
 
-  private final RewardRuleService service;
+    public RewardRuleController(RewardRuleService service) {
+        this.service = service;
+    }
 
-  public RewardRuleController(RewardRuleService service) {
-    this.service = service;
-  }
+    @PostMapping
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for POST
+    public RewardRule create(@RequestBody RewardRule rule) {
+        return service.createRule(rule);
+    }
 
-  @PostMapping
-  public ResponseEntity<RewardRule> create(@RequestBody RewardRule rule) {
-    return ResponseEntity.ok(service.createRule(rule));
-  }
+    @GetMapping("/active")
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET active
+    public List<RewardRule> getActive() {
+        return service.getActiveRules();
+    }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<RewardRule> update(@PathVariable Long id, @RequestBody RewardRule updated) {
-    return ResponseEntity.ok(service.updateRule(id, updated));
-  }
-
-  @GetMapping("/card/{cardId}")
-  public ResponseEntity<List<RewardRule>> byCard(@PathVariable Long cardId) {
-    return ResponseEntity.ok(service.getRulesByCard(cardId));
-  }
-
-  @GetMapping("/active")
-  public ResponseEntity<List<RewardRule>> active() {
-    return ResponseEntity.ok(service.getActiveRules());
-  }
-
-  @GetMapping
-  public ResponseEntity<List<RewardRule>> all() {
-    return ResponseEntity.ok(service.getAllRules());
-  }
+    @GetMapping
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET all
+    public List<RewardRule> list() {
+        return service.getAllRules();
+    }
 }

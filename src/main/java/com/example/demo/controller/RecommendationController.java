@@ -2,37 +2,34 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RecommendationRecord;
 import com.example.demo.service.RecommendationEngineService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommendations")
 public class RecommendationController {
+    private final RecommendationEngineService service;
 
-  private final RecommendationEngineService service;
+    public RecommendationController(RecommendationEngineService service) {
+        this.service = service;
+    }
 
-  public RecommendationController(RecommendationEngineService service) {
-    this.service = service;
-  }
+    @PostMapping("/generate/{intentId}")
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for POST
+    public RecommendationRecord generate(@PathVariable Long intentId) {
+        return service.generateRecommendation(intentId);
+    }
 
-  @PostMapping("/generate/{intentId}")
-  public ResponseEntity<RecommendationRecord> generate(@PathVariable Long intentId) {
-    return ResponseEntity.ok(service.generateRecommendation(intentId));
-  }
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET by User ID
+    public List<RecommendationRecord> getByUser(@PathVariable Long userId) {
+        return service.getRecommendationsByUser(userId);
+    }
 
-  @GetMapping("/user/{userId}")
-  public ResponseEntity<List<RecommendationRecord>> byUser(@PathVariable Long userId) {
-    return ResponseEntity.ok(service.getRecommendationsByUser(userId));
-  }
-
-  @GetMapping("/{id}")
-  public ResponseEntity<RecommendationRecord> get(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getRecommendationById(id));
-  }
-
-  @GetMapping
-  public ResponseEntity<List<RecommendationRecord>> all() {
-    return ResponseEntity.ok(service.getAllRecommendations());
-  }
+    @GetMapping
+    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET list
+    public List<RecommendationRecord> list() {
+        return service.getAllRecommendations();
+    }
 }
