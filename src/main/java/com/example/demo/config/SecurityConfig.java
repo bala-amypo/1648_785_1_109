@@ -127,21 +127,21 @@ public class SecurityConfig {
                 })
             )
             .authorizeHttpRequests(auth -> auth
-                // 🔓 Public Endpoints
+                // 🔓 Public endpoints (Swagger + Auth)
                 .requestMatchers(
                         "/api/auth/**",
                         "/api/users/**",
+                        "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
-                        "/v3/api-docs/**",
-                        "/v3/api-docs.yaml",
-                        "/error"
+                        "/swagger-ui/**/**",
+                        "/swagger-resources/**",
+                        "/webjars/**"
                 ).permitAll()
-                // 🔒 Protected Endpoints
+                // 🔒 Everything else
                 .anyRequest().authenticated()
             );
 
-        // Add JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -153,7 +153,7 @@ public class SecurityConfig {
                 .map(user -> new User(
                         user.getEmail(),
                         user.getPassword(),
-                        new ArrayList<>() // You can add roles here if needed
+                        new ArrayList<>()
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
