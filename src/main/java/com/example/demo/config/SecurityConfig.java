@@ -28,6 +28,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserProfileRepository userRepository;
 
+    // We use @Lazy here to break the circular dependency loop
     public SecurityConfig(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter, UserProfileRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userRepository = userRepository;
@@ -39,40 +40,33 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex
-                .authenticationEntryPoint((req, res, authEx) ->
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized Access")
-                )
+                .authenticationEntryPoint((req, res, authEx) -> {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized Access");
+                })
             )
             .authorizeHttpRequests(auth -> auth
                 // 🔓 Public Endpoints
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/api/users/**",
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-ui.html",
-                    "/swagger-resources/**",
-                    "/webjars/**",
-                    "/error"
-                ).permitAll()
-                // 🔒 Protected Endpoints
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
+                .requestMatchers("/api/users/**").permitAll() 
+                
+                // 🔒 Protected Endpoints (Credit Card operations)
                 .anyRequest().authenticated()
             );
 
-        // Add JWT filter
+        // Add the JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // Load user from DB using email
+    // Bean to load user from database via UserProfileRepository
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
                 .map(user -> new User(
-                        user.getEmail(),
-                        user.getPassword(),
-                        new ArrayList<>()
+                        user.getEmail(), 
+                        user.getPassword(), 
+                        new ArrayList<>() // Add roles here if needed
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
