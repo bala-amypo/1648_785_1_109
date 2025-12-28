@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-@Service
-@Transactional
+// @Service
+// @Transactional
 // public class UserProfileServiceImpl implements UserProfileService {
 //     private final UserProfileRepository repo;
 //     private final PasswordEncoder encoder;
@@ -33,7 +33,6 @@ public class UserProfileServiceImpl implements UserProfileService {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
-}
 
     @Override
     public UserProfile createUser(UserProfile p) {
