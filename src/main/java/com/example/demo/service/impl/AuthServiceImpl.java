@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserProfileRepository userProfileRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final PasswordEncoder passwordEncoder; // Added for 200 success
+    private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImpl(UserProfileService userService,
                            UserProfileRepository userProfileRepository,
@@ -38,25 +38,26 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse register(RegisterRequest req) {
+        // Validation
         if (userProfileRepository.existsByEmail(req.getEmail())) {
-            throw new BadRequestException("Email already exists");
+            throw new BadRequestException("Duplicate email");
         }
 
         UserProfile user = new UserProfile();
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
         
-        // ENCRYPT the password before saving
+        // Use PasswordEncoder for security
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         
         user.setRole(req.getRole() != null ? req.getRole() : "USER");
         user.setUserId(req.getUserId() != null ? req.getUserId() : UUID.randomUUID().toString());
         user.setActive(true);
 
-        UserProfile savedUser = userService.createUser(user);
+        UserProfile saved = userService.createUser(user);
 
-        String token = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
-        return new JwtResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
+        String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), saved.getRole());
+        return new JwtResponse(token, saved.getId(), saved.getEmail(), saved.getRole());
     }
 
     @Override
@@ -66,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         UserProfile user = userProfileRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Invalid user"));
 
         String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
         return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());

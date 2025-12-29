@@ -29,14 +29,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable) // MUST be disabled for Postman/Curl
+            // 1. Disable CSRF for REST APIs (otherwise POST/PUT/DELETE return 403)
+            .csrf(AbstractHttpConfigurer::disable)
+            
+            // 2. Set session to stateless for JWT
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            
+            // 3. Configure Path Permissions
             .authorizeHttpRequests(auth -> auth
-                // Matches the Controller mapping below
-                .requestMatchers("/api/auth/**").permitAll() 
+                // Allow the register and login endpoints
+                .requestMatchers("/api/auth/**").permitAll()
+                // Allow error path (crucial for Spring Security 6+ to see 400/500 errors instead of 403)
+                .requestMatchers("/error").permitAll()
+                // Allow Swagger/API Docs
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                // All other requests need a token
                 .anyRequest().authenticated()
             );
 
