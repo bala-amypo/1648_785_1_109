@@ -84,3 +84,4 @@ public class AuthServiceImpl implements AuthService {
         return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
     }
 }
+
