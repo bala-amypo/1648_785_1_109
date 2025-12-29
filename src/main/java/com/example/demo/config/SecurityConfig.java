@@ -26,16 +26,7 @@ public class SecurityConfig {
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable()) // <--- 1. DISABLE THIS for testing/APIs
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll() // <--- 2. ALLOW REGISTER/LOGIN
-            .anyRequest().authenticated()
-        );
-    return http.build();
-}
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
