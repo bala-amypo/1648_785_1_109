@@ -16,7 +16,6 @@ public class JwtUtil {
     private final Key key;
     private final long expirationMs;
 
-    // Use @Value to inject properties into the specific constructor required by tests
     public JwtUtil(
             @Value("${app.jwt.secret}") byte[] secret, 
             @Value("${app.jwt.expiration-ms}") Long expirationMs) {
@@ -44,7 +43,6 @@ public class JwtUtil {
     }
 
     public Long extractUserId(String token) {
-        // Ensure conversion to Long as required by extractUserId(String) -> Long
         Object userId = parseClaims(token).get("userId");
         if (userId instanceof Integer) {
             return ((Integer) userId).longValue();
