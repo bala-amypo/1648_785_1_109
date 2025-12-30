@@ -23,7 +23,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()") // Changed to permitAll for testing
+    @PreAuthorize("permitAll()")
     public UserProfile get(@PathVariable Long id) {
         return service.getUserById(id);
     }

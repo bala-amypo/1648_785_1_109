@@ -16,7 +16,7 @@ public class PurchaseIntentController {
     }
 
     @PostMapping
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for POST
+    @PreAuthorize("permitAll()") 
     public PurchaseIntentRecord create(@RequestBody PurchaseIntentRecord intent) {
         return service.createIntent(intent);
     }
@@ -28,7 +28,7 @@ public class PurchaseIntentController {
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET list
+    @PreAuthorize("permitAll()") 
     public List<PurchaseIntentRecord> list() {
         return service.getAllIntents();
     }

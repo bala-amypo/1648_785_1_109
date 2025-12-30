@@ -16,19 +16,19 @@ public class RewardRuleController {
     }
 
     @PostMapping
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for POST
+    @PreAuthorize("permitAll()") 
     public RewardRule create(@RequestBody RewardRule rule) {
         return service.createRule(rule);
     }
 
     @GetMapping("/active")
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET active
+    @PreAuthorize("permitAll()") 
     public List<RewardRule> getActive() {
         return service.getActiveRules();
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET all
+    @PreAuthorize("permitAll()") 
     public List<RewardRule> list() {
         return service.getAllRules();
     }

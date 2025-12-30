@@ -18,13 +18,12 @@ public class SwaggerConfig {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info()
-                        .title("Creditcard reward maximizer")
+                        .title("Creditcard Reward Maximizer")
                         .version("1.0")
                         .description("API for managing user profiles. Use the /api/auth/login endpoint to get a token."))
                 .servers(List.of(
                         new Server().url("https://9173.pro604cr.amypo.ai/").description("Development Server")
                 ))
-                // This applies security to EVERY endpoint in the UI
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName, new SecurityScheme()
@@ -32,6 +31,6 @@ public class SwaggerConfig {
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")
-                                .in(SecurityScheme.In.HEADER))); // Ensures token is sent in Header
+                                .in(SecurityScheme.In.HEADER)));
     }
 }

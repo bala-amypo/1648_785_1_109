@@ -16,19 +16,19 @@ public class RecommendationController {
     }
 
     @PostMapping("/generate/{intentId}")
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for POST
+    @PreAuthorize("permitAll()") 
     public RecommendationRecord generate(@PathVariable Long intentId) {
         return service.generateRecommendation(intentId);
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET by User ID
+    @PreAuthorize("permitAll()") 
     public List<RecommendationRecord> getByUser(@PathVariable Long userId) {
         return service.getRecommendationsByUser(userId);
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET list
+    @PreAuthorize("permitAll()") 
     public List<RecommendationRecord> list() {
         return service.getAllRecommendations();
     }

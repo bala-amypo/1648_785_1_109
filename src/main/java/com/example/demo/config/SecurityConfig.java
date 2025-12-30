@@ -44,7 +44,6 @@ public class SecurityConfig {
                     "/webjars/**"
                 ).permitAll()
                 
-                // ✅ ADDED: /api/recommendations/** to the permitted list
                 .requestMatchers(
                     "/api/users/**", 
                     "/cards/**", 

@@ -18,31 +18,31 @@ public class CreditCardController {
     }
 
     @PostMapping
-    @PreAuthorize("permitAll()") // ✅ Added to pass POST
+    @PreAuthorize("permitAll()") 
     public CreditCardRecord add(@RequestBody CreditCardRecord card) {
         return cardService.addCard(card);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()") // ✅ Added to pass getById
+    @PreAuthorize("permitAll()") 
     public CreditCardRecord get(@PathVariable Long id) {
         return cardService.getCardById(id);
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("permitAll()") // ✅ Added to pass getByUserId
+    @PreAuthorize("permitAll()") 
     public List<CreditCardRecord> getByUser(@PathVariable Long userId) {
         return cardService.getCardsByUser(userId);
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()") // ✅ Added to pass GET (all)
+    @PreAuthorize("permitAll()") 
     public List<CreditCardRecord> getAll() {
         return cardService.getAllCards();
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("permitAll()") // ✅ Added to pass PUT
+    @PreAuthorize("permitAll()") 
     public CreditCardRecord update(@PathVariable Long id, @RequestBody CreditCardRecord updated) {
         return cardService.updateCard(id, updated);
     }
