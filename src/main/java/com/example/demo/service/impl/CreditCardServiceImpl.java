@@ -20,7 +20,6 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     public CreditCardRecord addCard(CreditCardRecord card) {
-        // FIX: Check if annualFee is not null before comparing it to 0
         if (card.getAnnualFee() != null && card.getAnnualFee() < 0) {
             throw new BadRequestException("Fee must be non-negative");
         }

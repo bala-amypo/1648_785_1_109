@@ -29,7 +29,7 @@ public class RewardRuleServiceImpl implements RewardRuleService {
         RewardRule existing = ruleRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
         existing.setMultiplier(updated.getMultiplier());
         existing.setActive(updated.getActive());
-        return createRule(existing); // reuse validation
+        return createRule(existing); 
     }
 
     public List<RewardRule> getRulesByCard(Long cardId) { return ruleRepo.findAll(); /* Simplified for sample */ }
