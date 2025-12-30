@@ -22,7 +22,7 @@ public class PurchaseIntentController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("permitAll()") // ✅ Clears 403 for GET by User ID
+    @PreAuthorize("permitAll()") 
     public List<PurchaseIntentRecord> getByUser(@PathVariable Long userId) {
         return service.getIntentsByUser(userId);
     }
